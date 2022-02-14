@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <title>step1</title>
+</head>
+<body>
+    <div id="chat">
+        
+    </div>
+    <input type="text" id="inputText" placeholder="入力してください"/>
+    <button onclick="update()">
+        更新
+    </button>
+</body>
+<script>
+    const url = "http://localhost:7000/talk"
+    async function update () {
+        let userP = document.createElement('p')
+        let responsedP = document.createElement('p')
+        const myElements = document.getElementById('chat')
+        const inputText = document.getElementById('inputText')
+
+        userP.innerText = inputText.value 
+        myElements.appendChild(userP)
+        const query = {
+            query:inputText.value
+        }
+        inputText.value = ""
+
+        const method = "POST"
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+        const body = JSON.stringify(query)
+        const response = await fetch(url,{method,headers,body})
+        const json = await response.json()
+        
+        responsedP.innerText = json.results[0].reply
+        
+        myElements.appendChild(responsedP)
+       
+    }
+</script>
