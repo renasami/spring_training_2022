@@ -12,9 +12,9 @@ services:
     image: mariadb:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: myjchatapp
-      MYSQL_USER: myjchatapp
-      MYSQL_PASSWORD: secret
+      MARIADB_ROOT_PASSWORD: root_password
+      MARIADB_USER: mariadb
+      MARIADB_PASSWORD: secret
+      MARIADB_DATABASE: myjchatapp
     ports:
       - 3306:3306
