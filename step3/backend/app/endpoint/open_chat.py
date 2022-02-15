@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
@@ -9,22 +9,21 @@ active_ws_connections: List[WebSocket] = []
 
 
 @router.websocket('/')
-async def chat(websocket: WebSocket):
+async def chat(websocket: WebSocket, nickname: Optional[str] = None):
     await websocket.accept()
     logging.getLogger("fastapi").debug("    WebSocket connection accepted")
     # 接続中のclientを保持
     active_ws_connections.append(websocket)
 
-    # headersの中のnicknameを取得
+    # クエリーの中のnicknameを取得
     # ない場合はunknown_{ipアドレス}にする
-    if 'nickname' in websocket.headers.keys():
-        nickname = websocket.headers.get('nickname')
-    else:
+    if nickname is None:
         nickname = f'unknown_{websocket.client.host}'
 
     logging.getLogger("fastapi").debug(f"   nickname: {nickname}")
     try:
         while True:
+            # { "message": "contents" }がbodyにある必要がある
             data = await websocket.receive_json()
             data['nickname'] = nickname
             logging.getLogger("fastapi").debug(f"   data: {data}")
