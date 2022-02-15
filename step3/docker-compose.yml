@@ -1,0 +1,20 @@
+services:
+  backend:
+    restart: always
+    build:
+      context: ./backend
+    ports:
+      - 8080:80
+    volumes:
+      - ./backend/app:/app
+
+  db:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: myjchatapp
+      MYSQL_USER: myjchatapp
+      MYSQL_PASSWORD: secret
+    ports:
+      - 3306:3306
