@@ -5,7 +5,7 @@ import HelloWorld from './components/HelloWorld.vue'
 
 const routes = [
     { path: '/', name: 'home', component: Home },
-    { path: '/hello', name: 'hello', component: HelloWorld },
+    // { path: '/hello', name: 'hello', component: HelloWorld },
 ]
  
 const router = createRouter({
