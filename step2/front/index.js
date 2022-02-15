@@ -28,9 +28,8 @@ const abledChatSpace = (doms) => {
 }
 //messageを要求されてるjson形式の文字列にして返す関数
 const getMessage = () => {
-    const text = document.getElementById("message")
     const msg = {
-        message: text.value
+        message: msgText.value
     }
     return JSON.stringify(msg)
 }
