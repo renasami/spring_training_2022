@@ -17,7 +17,7 @@
               <InputText  placeholder="Password" />
           </div>
       </div>
-  <Button label="Login" class="p-button-lg" />
+  <Button label="Register" class="p-button-lg" />
   </div>
 </template>
 <script lang="ts">

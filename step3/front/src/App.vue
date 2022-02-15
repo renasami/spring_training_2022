@@ -11,6 +11,32 @@ import { defineComponent } from "vue";
 // import HelloWorld from './components/HelloWorld.vue';
 export default defineComponent({
   name: "App",
+  data() {
+    return {
+      menu: [
+        {
+          header: "Main Navigation",
+          hiddenOnCollapse: true,
+        },
+        {
+          href: "/",
+          title: "Dashboard",
+          icon: "fa fa-user",
+        },
+        {
+          href: "/charts",
+          title: "Charts",
+          icon: "fa fa-chart-area",
+          child: [
+            {
+              href: "/charts/sublink",
+              title: "Sub Link",
+            },
+          ],
+        },
+      ],
+    };
+  },
 });
 </script>
 

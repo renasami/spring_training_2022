@@ -5,6 +5,9 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import { loadFonts } from './plugins/webfontloader'
 
+//appの定義
+const app = createApp(App)
+
 //自作で定義したルーターをimport
 import router from './router'
 
@@ -13,6 +16,7 @@ import router from './router'
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 
+//sidebarサボっていく
 
 //↓primevueのテーマを適用
 import "primevue/resources/themes/saga-green/theme.css" // テーマ
@@ -26,8 +30,6 @@ import ja from "./config/ja"
 //vueのフォントをdl
 loadFonts()
 
-
-const app = createApp(App)
 
 //ここで日本語化とPrimeVueの適用をしてます
 app.use(PrimeVue, {local:ja})
