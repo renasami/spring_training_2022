@@ -60,6 +60,8 @@ type Data = {
   error: boolean;
 };
 import Vue from "vue";
+import {Store} from "../type"
+
 export default Vue.extend({
   name: "Login",
   data(): Data {
@@ -76,6 +78,7 @@ export default Vue.extend({
     login: async function (): Promise<void> {
       if (this.name === "" || this.password === "") return;
       if (!this.validLanguage(this.name)) return;
+      let store:Store 
       const key = btoa(`${this.name}:${this.password}`);
       const token = `Basic ${key}`
       const headers = {
@@ -88,8 +91,13 @@ export default Vue.extend({
       if (result.status === 500)  alert("Internal Server Error")
       if (result.status !== 200) this.error = true;
       if (result.status === 200) {
-         this.$store.commit("updateUser",{name:this.name,token:token})
-         // this.$router.push("/")
+         this.$store.commit("updateStore",{
+            name:json.username,
+            token:token,
+            friends:json.friends,
+            groups:json.groups
+         })
+         this.$router.push("/")
       }
     },
      validLanguage: function (str:string): boolean {
