@@ -31,8 +31,8 @@ class Messages(Base):
     __tablename__ = 'messages'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    sender = Column(Integer, ForeignKey('users.id'), nullable=False, primary_key=True)
-    receiver = Column(Integer, ForeignKey('users.id'), nullable=False, primary_key=True)
+    sender_id = Column(Integer, ForeignKey('users.id'), nullable=False, primary_key=True)
+    receiver_id = Column(Integer, ForeignKey('users.id'), nullable=False, primary_key=True)
     message = Column(String(512), nullable=False)
 
 
@@ -59,5 +59,5 @@ class GroupsMessages(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     group_id = Column(Integer, ForeignKey('groups.id'), nullable=False, primary_key=True)
-    sender = Column(Integer, ForeignKey('users.id'), nullable=False, primary_key=True)
+    sender_id = Column(Integer, ForeignKey('users.id'), nullable=False, primary_key=True)
     message = Column(String(512), nullable=False)

@@ -72,38 +72,38 @@
     ],
     "messages": [
         {
-            "sender": 101,
-            "receiver": 102,
+            "sender_id": 101,
+            "receiver_id": 102,
             "message": "こんにちは"
         },
         {
-            "sender": 101,
-            "receiver": 103,
+            "sender_id": 101,
+            "receiver_id": 103,
             "message": "おやすみなさい"
         },
         {
-            "sender": 102,
-            "receiver": 103,
+            "sender_id": 102,
+            "receiver_id": 103,
             "message": "遊ぼうよ"
         },
         {
-            "sender": 103,
-            "receiver": 104,
+            "sender_id": 103,
+            "receiver_id": 104,
             "message": "お腹すいた"
         },
         {
-            "sender": 102,
-            "receiver": 104,
+            "sender_id": 102,
+            "receiver_id": 104,
             "message": "ありがとう"
         },
         {
-            "sender": 101,
-            "receiver": 105,
+            "sender_id": 101,
+            "receiver_id": 105,
             "message": "今日はいい天気だね"
         },
         {
-            "sender": 102,
-            "receiver": 106,
+            "sender_id": 102,
+            "receiver_id": 106,
             "message": "ごめんなさい"
         }
     ],
@@ -206,42 +206,42 @@
     "groupsMessages": [
         {
             "group_id": 101,
-            "sender": 101,
+            "sender_id": 101,
             "message": "ありがとう"
         },
         {
             "group_id": 101,
-            "sender": 102,
+            "sender_id": 102,
             "message": "おはよう"
         },
         {
             "group_id": 102,
-            "sender": 105,
+            "sender_id": 105,
             "message": "ありがとう"
         },
         {
             "group_id": 103,
-            "sender": 105,
+            "sender_id": 105,
             "message": "こんにちは"
         },
         {
             "group_id": 104,
-            "sender": 102,
+            "sender_id": 102,
             "message": "猫が好きです"
         },
         {
             "group_id": 105,
-            "sender": 104,
+            "sender_id": 104,
             "message": "猫は可愛いですね"
         },
         {
             "group_id": 106,
-            "sender": 104,
+            "sender_id": 104,
             "message": "今日は寒いですね"
         },
         {
             "group_id": 107,
-            "sender": 102,
+            "sender_id": 102,
             "message": "野球は面白いですね"
         }
     ]
