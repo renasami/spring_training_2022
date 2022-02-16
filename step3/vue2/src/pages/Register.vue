@@ -1,12 +1,12 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="register">
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-toolbar-title>Register form</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -31,23 +31,12 @@
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click="login">
                   <v-icon left>mdi-login</v-icon>
-                  Login
+                  Register
                 </v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
         </v-layout>
-        <v-dialog v-model="error" persistent width="360">
-          <v-card align="center">
-            <v-card-title> ユーザー名もしくはパスワードが違います </v-card-title>
-            <v-card-text>
-              もう一度やり直してください
-            </v-card-text>
-            <v-btn @click="retry" outlined color="red lighten-2" class="mb-3"
-              >OK</v-btn
-            >
-          </v-card>
-        </v-dialog>
       </v-container>
     </v-content>
   </v-app>
@@ -76,22 +65,24 @@ export default Vue.extend({
     login: async function (): Promise<void> {
       if (this.name === "" || this.password === "") return;
       if (!this.validLanguage(this.name)) return;
-      const key = btoa(`${this.name}:${this.password}`);
-      const headers = {
-        Authorization: `Basic ${key}`,
-        accept: "application/json",
-      };
-      const url = "http://localhost:8080/login"
-      const result = await fetch(url,{headers});
+      const url = "http://localhost:8080/user/register"
+      const method = "POST"
+       const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+      const json = {
+        username: this.name,
+        password: this.password
+      }
+      const body = JSON.stringify(json)
+      const result = await fetch(url,{method,headers,body});
       console.log(result)
-      if (result.status === 401) this.error = true;
+      if (result.status === 422) alert("validError");
+      if(result.status === 200) this.$router.push("/login")
     },
      validLanguage: function (str:string): boolean {
       return ( str.match(/^[A-Za-z0-9]*$/) )? true : false
-    },
-    retry: function (): void {
-      console.log("fa");
-      this.error = false;
     },
   },
 });
