@@ -25,8 +25,8 @@ def register(
 @router.post('/add_friend', response_model=List[User])
 def add_friend(
     friend_id: int = Body(..., embed=True),
-    current_user: DBUser = Depends(auth),
     db: Session = Depends(get_db),
+    current_user: DBUser = Depends(auth),
 ):
     try:
         friends = crud.user.add_friend(db, current_user.id, friend_id)
@@ -38,8 +38,8 @@ def add_friend(
 
 @router.get('/get_friends', response_model=List[User])
 def get_friends(
-    current_user: DBUser = Depends(auth),
     db: Session = Depends(get_db),
+    current_user: DBUser = Depends(auth),
 ):
 
     return crud.user.get_friends(db, current_user.id)
