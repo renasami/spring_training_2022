@@ -13,7 +13,7 @@
       </div>
       <div
         class="text-h3 mb-0"
-        v-text="text"
+        v-text="$text"
         >
         </div>
       <v-spacer></v-spacer>

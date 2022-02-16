@@ -77,14 +77,20 @@ export default Vue.extend({
       if (this.name === "" || this.password === "") return;
       if (!this.validLanguage(this.name)) return;
       const key = btoa(`${this.name}:${this.password}`);
+      const token = `Basic ${key}`
       const headers = {
-        Authorization: `Basic ${key}`,
+        Authorization: token,
         accept: "application/json",
       };
-      const url = "http://localhost:8080/user/login"
+      const url = "http://localhost:8080/login"
       const result = await fetch(url,{headers});
-      console.log(result)
-      if (result.status === 401) this.error = true;
+      const json = await result.json();
+      if (result.status === 500)  alert("Internal Server Error")
+      if (result.status !== 200) this.error = true;
+      if (result.status === 200) {
+         this.$store.commit("updateUser",{name:this.name,token:token})
+         // this.$router.push("/")
+      }
     },
      validLanguage: function (str:string): boolean {
       return ( str.match(/^[A-Za-z0-9]*$/) )? true : false
