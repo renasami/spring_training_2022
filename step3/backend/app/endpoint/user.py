@@ -17,8 +17,8 @@ def register(
     user_in: UserCreate,
     db: Session = Depends(get_db),
 ):
-
-    return crud.user.create(db, user=user_in)
+    db_user = DBUser(**user_in.dict())
+    return crud.user.create(db, obj_in=db_user)
 
 
 @router.get('/login', response_model=LoginUser)
