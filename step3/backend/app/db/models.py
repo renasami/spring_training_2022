@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.db.base import Base
+from app.security import get_password_hash
 
 
 class Users(Base):
@@ -11,7 +12,11 @@ class Users(Base):
     username = Column(String(256), nullable=False, unique=True)
     password = Column(String(256), nullable=False)
 
-    groups = relationship('Groups', secondary="GroupsMembers", back_populates='users')
+    groups = relationship('Groups', secondary="groups_members", back_populates='users')
+
+    # passwordをハッシュ化して保存する
+    def __init__(self, *, id: int = None, username: str, password: str) -> None:
+        super().__init__(id=id, username=username, password=get_password_hash(password))
 
 
 class Friends(Base):
@@ -37,8 +42,8 @@ class Groups(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(256), nullable=False, unique=True)
 
-    users = relationship('Users', secondary="GroupsMembers", back_populates='groups')
-    message = relationship('GroupMessages')
+    users = relationship('Users', secondary="groups_members", back_populates='groups')
+    message = relationship('GroupsMessages')
 
 
 class GroupsMembers(Base):
