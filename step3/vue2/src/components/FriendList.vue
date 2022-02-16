@@ -25,6 +25,10 @@ export default Vue.extend({
           }})
       }
     },
+    props:{
+        friends:[],
+        groups:[]
+    },
     components:{
         VirtualList,
     }
