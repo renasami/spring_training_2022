@@ -11,7 +11,11 @@
           width="40"
         />
       </div>
-
+      <div
+        class="text-h3 mb-0"
+        v-text="text"
+        >
+        </div>
       <v-spacer></v-spacer>
 
       <v-btn
@@ -28,7 +32,12 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-    name:"Header"
+    name:"Header",
+    // data() {
+    // },
+    props:{
+        text:String
+    }
 })
 </script>
 <style scoped>
