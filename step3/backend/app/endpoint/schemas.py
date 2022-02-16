@@ -1,4 +1,5 @@
 from typing import List
+from datetime import datetime
 
 from pydantic import BaseModel
 
@@ -11,6 +12,24 @@ class User(BaseModel):
         orm_mode = True
 
 
+class UserCreate(BaseModel):
+    username: str
+    password: str
+
+
+class ReceivePersonalMessage(BaseModel):
+    datetime: datetime
+    receiver_id: int
+    message: str
+
+
+class SendPersonalMessage(BaseModel):
+    datetime: datetime
+    sender_id: int
+    receiver_id: int
+    message: str
+
+
 class Group(BaseModel):
     id: int
     name: str
@@ -18,11 +37,6 @@ class Group(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-class UserCreate(BaseModel):
-    username: str
-    password: str
 
 
 class LoginUser(BaseModel):
