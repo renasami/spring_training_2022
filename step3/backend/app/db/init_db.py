@@ -5,7 +5,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
 from app.db.base import Base, engine, session
-from app.db import models  # noqa: F401
+from app.db import models
 from app.db import crud
 
 
@@ -16,7 +16,17 @@ def create_tables(base, engine: Engine) -> None:
 def insert_demo_users(session: Session, users: List) -> None:
     for user in users:
         user_in = models.Users(**user)
-        crud.users.create(session, obj_in=user_in)
+        crud.user.create(session, obj_in=user_in)
+
+
+def inster_demo_friends(session: Session, friends: List) -> None:
+    for friend in friends:
+        crud.user.add_friend(session, user_id=friend["user_id"], friend_id=friend["friend_id"])
+
+
+def inster_demo_groups(session: Session, groups: List) -> None:
+    for group in groups:
+        crud.group.create(session, obj_in=models.Groups(**group))
 
 
 if __name__ == "__main__":
@@ -32,3 +42,5 @@ if __name__ == "__main__":
     # demoデータをDBに挿入する
     with session() as db_session:
         insert_demo_users(db_session, demo_data['users'])
+        inster_demo_friends(db_session, demo_data['friends'])
+        inster_demo_groups(db_session, demo_data['groups'])
