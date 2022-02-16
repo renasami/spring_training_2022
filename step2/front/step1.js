@@ -51,5 +51,4 @@ const url = "http://localhost:8080/talk"
         // https://a3rt.recruit.co.jp/product/talkAPI の形式でレスポンスが返されるので
         //今回必要な情報(reply)を指定して先ほど定義した関数に渡している。
         renderResponsedMsg(json.results[0].reply,chatSpace)        
-      x
     }

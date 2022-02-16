@@ -1,10 +1,8 @@
 <template>
-    <h1>Hello Chat App</h1>
-    <router-link to="/hello">Page1へ遷移</router-link>
+<h1>Header</h1>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-
 
 export default defineComponent({
     setup() {
@@ -12,4 +10,6 @@ export default defineComponent({
     },
 })
 </script>
+<style scoped>
 
+</style>

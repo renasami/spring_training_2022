@@ -1,0 +1,58 @@
+body {
+    margin: 0 auto;
+    height:100vh;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    width:45%;
+    height:70%;
+    position: relative;
+    background-color: white;
+    box-shadow: 0 0 50px  rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.message{
+    width: 100%;
+    height:85%;
+    overflow: scroll;
+    padding: 0 20px;
+}
+
+.input{
+    width: 100%;
+    height: 15%;
+    position: absolute;
+    left:0;
+    bottom: 0;
+    background-color: #4e4e4e;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-txt, .input-btn{
+    border: none;
+    background-color: transparent;
+    height:100%;
+    color: white;
+    padding: 0 20px;
+}
+
+.input-txt{
+    width:80%;
+    font-size: 14px;
+}
+
+.input-txt:focus{
+    outline: none;
+}
+
+.input-btn{
+    width:15%;
+    font-size: 20px;
+}

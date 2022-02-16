@@ -1,15 +1,42 @@
 <template>
- <div id="app">
-    <router-view/>
-  </div>
+  <v-theme-provider theme="light" with-background class="pa-10">
+    <div id="app">
+      <router-view />
+    </div>
+  </v-theme-provider>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 // import HelloWorld from './components/HelloWorld.vue';
-
 export default defineComponent({
-  name: 'App'
+  name: "App",
+  data() {
+    return {
+      menu: [
+        {
+          header: "Main Navigation",
+          hiddenOnCollapse: true,
+        },
+        {
+          href: "/",
+          title: "Dashboard",
+          icon: "fa fa-user",
+        },
+        {
+          href: "/charts",
+          title: "Charts",
+          icon: "fa fa-chart-area",
+          child: [
+            {
+              href: "/charts/sublink",
+              title: "Sub Link",
+            },
+          ],
+        },
+      ],
+    };
+  },
 });
 </script>
 
