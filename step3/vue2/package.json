@@ -15,7 +15,8 @@
     "vue-smooth-dnd": "^0.8.1",
     "vue-virtual-scroll-list": "^2.3.3",
     "vuetify": "^2.4.0",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.18.0",

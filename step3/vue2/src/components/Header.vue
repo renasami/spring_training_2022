@@ -13,7 +13,7 @@
       </div>
       <div
         class="text-h3 mb-0"
-        v-text="text"
+        v-text="this.$store.state.name"
         >
         </div>
       <v-spacer></v-spacer>
@@ -38,6 +38,7 @@ export default Vue.extend({
     props:{
         text:String
     }
+    
 })
 </script>
 <style scoped>

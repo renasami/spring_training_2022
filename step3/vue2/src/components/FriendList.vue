@@ -3,10 +3,11 @@
     <div id="friends">
       <VirtualList
         id="virtual-list"
-        :data-key="'uid'"
+        :data-key="'id'"
         :data-sources="items"
         :data-component="itemComponent"
       />
+      <slot></slot>
     </div>
   
 </template>
@@ -22,28 +23,35 @@ export default Vue.extend({
           items: [...Array(1000)].map((_,i) => {return{
               uid:i,
               text:`item${i}`
-          }})
+          }}),
+          friends:[]
       }
-    },
-    props:{
-        friends:[],
-        groups:[]
     },
     components:{
         VirtualList,
+    },
+    beforeMount:function(){
+        this.friends = this.$store.state.friends
+        this.items = this.$store.state.friends
     }
 });
 </script>
 <style>
 #friends {
     height:100vh; 
+    width: 25vw;
+    margin:0;
+    padding:0;
     /* border:solid; */
-    padding-left: 25evw;
+    /* padding-left: 25evw;
+    padding-right: 0;
+    margin-right: 0; */
 }
 #virtual-list {
     height: 100vh; 
     overflow-y: auto;
     border:1px solid;
     width: 25vw;
+    margin: 0;
 }
 </style>

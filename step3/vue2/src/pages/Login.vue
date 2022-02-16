@@ -60,6 +60,8 @@ type Data = {
   error: boolean;
 };
 import Vue from "vue";
+import {Store} from "../type"
+
 export default Vue.extend({
   name: "Login",
   data(): Data {
@@ -76,15 +78,27 @@ export default Vue.extend({
     login: async function (): Promise<void> {
       if (this.name === "" || this.password === "") return;
       if (!this.validLanguage(this.name)) return;
+      let store:Store 
       const key = btoa(`${this.name}:${this.password}`);
+      const token = `Basic ${key}`
       const headers = {
-        Authorization: `Basic ${key}`,
+        Authorization: token,
         accept: "application/json",
       };
-      const url = "http://localhost:8080/user/login"
+      const url = "http://localhost:8080/login"
       const result = await fetch(url,{headers});
-      console.log(result)
-      if (result.status === 401) this.error = true;
+      const json = await result.json();
+      if (result.status === 500)  alert("Internal Server Error")
+      if (result.status !== 200) this.error = true;
+      if (result.status === 200) {
+         this.$store.commit("updateStore",{
+            name:json.username,
+            token:token,
+            friends:json.friends,
+            groups:json.groups
+         })
+         this.$router.push("/")
+      }
     },
      validLanguage: function (str:string): boolean {
       return ( str.match(/^[A-Za-z0-9]*$/) )? true : false
