@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.db import crud
 from app.db.base import get_db
 from app.db.models import Users as DBUser
-from app.endpoint.schemas import LoginUser, User, UserCreate
+from app.endpoint.schemas import User, UserCreate
 from app.security import auth
 
 router = APIRouter()
@@ -19,16 +19,6 @@ def register(
 ):
     db_user = DBUser(**user_in.dict())
     return crud.user.create(db, obj_in=db_user)
-
-
-@router.get('/login', response_model=LoginUser)
-def login(
-    current_user: DBUser = Depends(auth),
-    db: Session = Depends(get_db),
-):
-
-    current_user.friends = crud.user.get_friends(db, current_user.id)
-    return current_user
 
 
 @router.post('/add_friend', response_model=List[User])
