@@ -1,43 +1,50 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, Body
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 
 from app.db import crud
 from app.db.base import get_db
+from app.db.models import Users as DBUser
 from app.endpoint.schemas import LoginUser, User, UserCreate
 from app.security import auth
 
 router = APIRouter()
 
-security = HTTPBasic()
-
 
 @router.post('/register', response_model=User)
-def register(user_in: UserCreate, db: Session = Depends(get_db)):
-    user = crud.user.create(db, user=user_in)
-    return user
+def register(
+    user_in: UserCreate,
+    db: Session = Depends(get_db),
+):
+
+    return crud.user.create(db, user=user_in)
 
 
 @router.get('/login', response_model=LoginUser)
 def login(
-    credentials: HTTPBasicCredentials = Depends(security),
+    current_user: DBUser = Depends(auth),
     db: Session = Depends(get_db),
 ):
 
-    user = auth(credentials, db)
-    user.friends = crud.user.get_friends(db, user.id)
-
-    return user
+    current_user.friends = crud.user.get_friends(db, current_user.id)
+    return current_user
 
 
 @router.post('/add_friend', response_model=List[User])
 def add_friend(
     friend_id: int = Body(..., embed=True),
-    credentials: HTTPBasicCredentials = Depends(security),
+    current_user: DBUser = Depends(auth),
     db: Session = Depends(get_db),
 ):
-    user = auth(credentials, db)
 
-    return crud.user.add_friend(db, user.id, friend_id)
+    return crud.user.add_friend(db, current_user.id, friend_id)
+
+
+@router.get('/get_friends', response_model=List[User])
+def get_friends(
+    current_user: DBUser = Depends(auth),
+    db: Session = Depends(get_db),
+):
+
+    return crud.user.get_friends(db, current_user.id)

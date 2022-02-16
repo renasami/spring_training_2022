@@ -1,10 +1,12 @@
-from fastapi import HTTPException, status
-from fastapi.security import HTTPBasicCredentials
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from app.db import crud
+from app.db.base import get_db
 
+security = HTTPBasic()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -16,7 +18,7 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def auth(credentials: HTTPBasicCredentials, db: Session):
+def auth(db: Session = Depends(get_db), credentials: HTTPBasicCredentials = Depends(security)):
     username = credentials.username
     password = credentials.password
 
