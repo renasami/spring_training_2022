@@ -12,6 +12,9 @@ memo
 * グループはチャットとmemberを表示
 * チャット
 
+注: vue.extends の中でdata等は関数を使う
+
+
 フロントエンド全般
 https://qiita.com/nuko-suke/items/50ba4e35289e98d95753
 
