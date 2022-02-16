@@ -12,6 +12,7 @@ export default new Vuex.Store({
     token: "",
     friends:<User[]>[],
     groups: <Group[]>[],
+    index:0
   },
   mutations: {
     updateStore(state,user:Store):void {
@@ -25,6 +26,12 @@ export default new Vuex.Store({
       state.token = ''
       state.friends = []
       state.groups = []
+    },
+    updateIndex(state,ind:number):void {
+      state.index = ind
+    },
+    resetIndex(state) {
+      state.index = 0
     }
   },
   actions: {},

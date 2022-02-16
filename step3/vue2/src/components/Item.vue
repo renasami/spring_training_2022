@@ -1,5 +1,5 @@
 <template>
-    <div>{{ index }} - {{ source.username }}</div>
+    <div @click="talk">{{ index }} - {{ source.username }}</div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -14,6 +14,11 @@ export default Vue.extend({
         default () {
           return {}
         }
+      }
+    },
+    methods: {
+      talk: function (){ 
+          this.$store.commit("updateIndex",this.index);
       }
     }
 

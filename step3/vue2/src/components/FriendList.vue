@@ -7,6 +7,7 @@
         :data-sources="items"
         :data-component="itemComponent"
       />
+      <slot></slot>
     </div>
   
 </template>
@@ -38,13 +39,19 @@ export default Vue.extend({
 <style>
 #friends {
     height:100vh; 
+    width: 25vw;
+    margin:0;
+    padding:0;
     /* border:solid; */
-    padding-left: 25evw;
+    /* padding-left: 25evw;
+    padding-right: 0;
+    margin-right: 0; */
 }
 #virtual-list {
     height: 100vh; 
     overflow-y: auto;
     border:1px solid;
     width: 25vw;
+    margin: 0;
 }
 </style>

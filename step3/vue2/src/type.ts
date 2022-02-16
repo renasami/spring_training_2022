@@ -13,5 +13,6 @@ export type Store = {
   name: string,
   token: string,
   friends: User[],
-  groups:Group[]
+  groups:Group[],
+  index: number
 }
