@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+from typing import List
+
+from fastapi import APIRouter, Depends, Body
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 
@@ -28,3 +30,14 @@ def login(
     user.friends = crud.user.get_friends(db, user.id)
 
     return user
+
+
+@router.post('/add_friend', response_model=List[User])
+def add_friend(
+    friend_id: int = Body(..., embed=True),
+    credentials: HTTPBasicCredentials = Depends(security),
+    db: Session = Depends(get_db),
+):
+    user = auth(credentials, db)
+
+    return crud.user.add_friend(db, user.id, friend_id)
