@@ -20,6 +20,11 @@ class Group(BaseModel):
         orm_mode = True
 
 
+class UserCreate(BaseModel):
+    username: str
+    password: str
+
+
 class LoginUser(BaseModel):
     id: int
     username: str

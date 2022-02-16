@@ -81,7 +81,7 @@ class CRUDUser(CRUDBase[Users]):
         db_session.add(friend_in)
         db_session.commit()
 
-        return self.get_friends(db_session, user_id)
+        return self.get_friends(db_session, user.id)
 
 
 class CRUDGroups(CRUDBase[Groups]):

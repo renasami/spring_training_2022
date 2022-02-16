@@ -1,31 +1,40 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from typing import List
+
+from fastapi import APIRouter, Depends, Body
 from sqlalchemy.orm import Session
 
 from app.db import crud
 from app.db.base import get_db
-from app.endpoint.schemas import LoginUser
-from app.security import verify_password
+from app.db.models import Users as DBUser
+from app.endpoint.schemas import User, UserCreate
+from app.security import auth
 
 router = APIRouter()
 
-security = HTTPBasic()
+
+@router.post('/register', response_model=User)
+def register(
+    user_in: UserCreate,
+    db: Session = Depends(get_db),
+):
+    db_user = DBUser(**user_in.dict())
+    return crud.user.create(db, obj_in=db_user)
 
 
-@router.get('/login', response_model=LoginUser)
-def login(credentials: HTTPBasicCredentials = Depends(security), db: Session = Depends(get_db)):
-    username = credentials.username
-    password = credentials.password
+@router.post('/add_friend', response_model=List[User])
+def add_friend(
+    friend_id: int = Body(..., embed=True),
+    current_user: DBUser = Depends(auth),
+    db: Session = Depends(get_db),
+):
 
-    user = crud.user.get_by_username(db, username)
+    return crud.user.add_friend(db, current_user.id, friend_id)
 
-    if user is None or not verify_password(password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='ユーザ名かパスワードが間違っています',
-            headers={"WWW-Authenticate": "Basic"},
-        )
 
-    user.friends = crud.user.get_friends(db, user.id)
+@router.get('/get_friends', response_model=List[User])
+def get_friends(
+    current_user: DBUser = Depends(auth),
+    db: Session = Depends(get_db),
+):
 
-    return user
+    return crud.user.get_friends(db, current_user.id)
