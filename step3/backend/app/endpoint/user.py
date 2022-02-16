@@ -1,7 +1,8 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Body
+from fastapi import APIRouter, Depends, Body, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from app.db import crud
 from app.db.base import get_db
@@ -27,8 +28,12 @@ def add_friend(
     current_user: DBUser = Depends(auth),
     db: Session = Depends(get_db),
 ):
+    try:
+        friends = crud.user.add_friend(db, current_user.id, friend_id)
+    except (ValueError, NoResultFound) as e:
+        raise HTTPException(status_code=404, detail=f'{e}')
 
-    return crud.user.add_friend(db, current_user.id, friend_id)
+    return friends
 
 
 @router.get('/get_friends', response_model=List[User])
