@@ -1,0 +1,248 @@
+{
+    "users": [
+        {
+            "id": 101,
+            "username": "chin_sei",
+            "password": "admin"
+        },
+        {
+            "id": 102,
+            "username": "sei",
+            "password": "sei1000"
+        },
+        {
+            "id": 103,
+            "username": "ren",
+            "password": "ren1000"
+        },
+        {
+            "id": 104,
+            "username": "ami",
+            "password": "ami1000"
+        },
+        {
+            "id": 105,
+            "username": "yuzuka",
+            "password": "yuzuka1000"
+        },
+        {
+            "id": 106,
+            "username": "ozeki",
+            "password": "ozeki1000"
+        },
+        {
+            "id": 107,
+            "username": "MIYAJI",
+            "password": "MIYAJI1000"
+        }
+    ],
+    "friends": [
+        {
+            "user_id": 101,
+            "friend_id": 102
+        },
+        {
+            "user_id": 101,
+            "friend_id": 103
+        },
+        {
+            "user_id": 102,
+            "friend_id": 103
+        },
+        {
+            "user_id": 103,
+            "friend_id": 104
+        },
+        {
+            "user_id": 102,
+            "friend_id": 104
+        },
+        {
+            "user_id": 101,
+            "friend_id": 105
+        },
+        {
+            "user_id": 102,
+            "friend_id": 106
+        },
+        {
+            "user_id": 104,
+            "friend_id": 107
+        }
+    ],
+    "messages": [
+        {
+            "sender": 101,
+            "receiver": 102,
+            "message": "こんにちは"
+        },
+        {
+            "sender": 101,
+            "receiver": 103,
+            "message": "おやすみなさい"
+        },
+        {
+            "sender": 102,
+            "receiver": 103,
+            "message": "遊ぼうよ"
+        },
+        {
+            "sender": 103,
+            "receiver": 104,
+            "message": "お腹すいた"
+        },
+        {
+            "sender": 102,
+            "receiver": 104,
+            "message": "ありがとう"
+        },
+        {
+            "sender": 101,
+            "receiver": 105,
+            "message": "今日はいい天気だね"
+        },
+        {
+            "sender": 102,
+            "receiver": 106,
+            "message": "ごめんなさい"
+        }
+    ],
+    "groups": [
+        {
+            "id": 101,
+            "name": "myjlab-1"
+        },
+        {
+            "id": 102,
+            "name": "myjlab-2"
+        },
+        {
+            "id": 103,
+            "name": "myjlab-3"
+        },
+        {
+            "id": 104,
+            "name": "myjlab-4"
+        },
+        {
+            "id": 105,
+            "name": "rabbit"
+        },
+        {
+            "id": 106,
+            "name": "gorilla"
+        },
+        {
+            "id": 107,
+            "name": "tomato"
+        }
+    ],
+    "groups_members": [
+        {
+            "group_id": 101,
+            "user_id": 101
+        },
+        {
+            "group_id": 101,
+            "user_id": 102
+        },
+        {
+            "group_id": 101,
+            "user_id": 103
+        },
+        {
+            "group_id": 101,
+            "user_id": 104
+        },
+        {
+            "group_id": 102,
+            "user_id": 105
+        },
+        {
+            "group_id": 102,
+            "user_id": 106
+        },
+        {
+            "group_id": 103,
+            "user_id": 107
+        },
+        {
+            "group_id": 104,
+            "user_id": 101
+        },
+        {
+            "group_id": 105,
+            "user_id": 102
+        },
+        {
+            "group_id": 106,
+            "user_id": 103
+        },
+        {
+            "group_id": 107,
+            "user_id": 104
+        },
+        {
+            "group_id": 103,
+            "user_id": 105
+        },
+        {
+            "group_id": 104,
+            "user_id": 102
+        },
+        {
+            "group_id": 105,
+            "user_id": 104
+        },
+        {
+            "group_id": 106,
+            "user_id": 104
+        },
+        {
+            "group_id": 107,
+            "user_id": 102
+        }
+    ],
+    "groupsMessages": [
+        {
+            "group_id": 101,
+            "sender": 101,
+            "message": "ありがとう"
+        },
+        {
+            "group_id": 101,
+            "sender": 102,
+            "message": "おはよう"
+        },
+        {
+            "group_id": 102,
+            "sender": 105,
+            "message": "ありがとう"
+        },
+        {
+            "group_id": 103,
+            "sender": 105,
+            "message": "こんにちは"
+        },
+        {
+            "group_id": 104,
+            "sender": 102,
+            "message": "猫が好きです"
+        },
+        {
+            "group_id": 105,
+            "sender": 104,
+            "message": "猫は可愛いですね"
+        },
+        {
+            "group_id": 106,
+            "sender": 104,
+            "message": "今日は寒いですね"
+        },
+        {
+            "group_id": 107,
+            "sender": 102,
+            "message": "野球は面白いですね"
+        }
+    ]
+}
