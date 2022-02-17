@@ -52,7 +52,8 @@ ws_manager = ConnectionManager()
 
 @router.websocket('/ws_connect')
 async def ws_connect(websocket: WebSocket, basic: str):
-
+    # wsフロントからではheaderを送れないので
+    # クエリパラメータでkeyを受け取って、バックでheaderに入れる
     key, value = 'Authorization', f'Basic {basic}'
     websocket.headers._list.append((key.lower().encode("latin-1"), value.encode("latin-1")))
     with session() as db:
