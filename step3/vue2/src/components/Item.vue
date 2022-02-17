@@ -19,6 +19,9 @@ export default Vue.extend({
     methods: {
       talk: function (){ 
           this.$store.commit("updateIndex",this.index);
+      },
+      onBlur: function (){
+        
       }
     }
 
@@ -26,7 +29,7 @@ export default Vue.extend({
 </script>
 <style scoped>
     div{
-        height:10vh;
+        height:20vh;
         border: 1px solid;
         width:100%;
     }
