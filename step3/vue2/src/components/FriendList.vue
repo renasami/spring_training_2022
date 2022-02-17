@@ -1,7 +1,8 @@
 <template>
   
     <div id="friends">
-      <VirtualList
+  
+     <VirtualList
         id="virtual-list"
         :data-key="'id'"
         :data-sources="items"
@@ -33,6 +34,7 @@ export default Vue.extend({
     beforeMount:function(){
         this.friends = this.$store.state.friends
         this.items = this.$store.state.friends
+        console.log(this.items)
     }
 });
 </script>
@@ -42,6 +44,7 @@ export default Vue.extend({
     width: 25vw;
     margin:0;
     padding:0;
+    background-color: whitesmoke;
     /* border:solid; */
     /* padding-left: 25evw;
     padding-right: 0;

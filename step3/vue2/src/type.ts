@@ -10,8 +10,11 @@ export type Group = {
 }
 
 export type Store = {
+  id:number,
   name: string,
+  password:string,
   token: string,
+  key: string,
   friends: User[],
   groups:Group[],
   index: number
