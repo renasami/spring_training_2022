@@ -8,25 +8,31 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state:{
+    id:0,
     name: "",
     password: "",
     token: "",
+    key:"",
     friends:<User[]>[],
     groups: <Group[]>[],
     index:0,
-    // socket:
   },
   mutations: {
     updateStore(state,user:Store):void {
+        state.id = user.id;
         state.name = user.name;
         state.password = user.password;
         state.token = user.token;
+        state.key = user.key;
         state.friends = user.friends;
         state.groups = user.groups;
     },
     resetStore(state):void {
+      state.id = 0;
       state.name = ''
+      state.password = ''
       state.token = ''
+      state.key = ''
       state.friends = []
       state.groups = []
     },
@@ -36,6 +42,9 @@ export default new Vuex.Store({
     resetIndex(state) {
       state.index = 0
     }
+  },
+  getters:{
+    index(state):number {return state.index}
   },
   actions: {},
   modules: {},

@@ -80,7 +80,7 @@ export default Vue.extend({
       if (!this.validLanguage(this.name)) return;
       let store:Store 
       const key = btoa(`${this.name}:${this.password}`);
-      const token = `Bearer ${key}`
+      const token = `Basic ${key}`
       const headers = {
         Authorization: token,
         accept: "application/json",
@@ -92,9 +92,11 @@ export default Vue.extend({
       if (result.status !== 200) this.error = true;
       if (result.status === 200) {
          this.$store.commit("updateStore",{
+            id: json.id,
             name:json.username,
             password:this.password,
             token:token,
+            key:key,
             friends:json.friends,
             groups:json.groups
          })

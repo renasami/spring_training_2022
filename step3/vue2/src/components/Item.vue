@@ -23,13 +23,8 @@ export default Vue.extend({
   },
   methods: {
     talk: function () {
+      
       this.$store.commit("updateIndex", this.index);
-    },
-    onBlur: function (): void {
-      console.log("onBlur");
-    },
-    onFocus: function (): void {
-      console.log("onFocus");
     },
   },
   mounted(): void {

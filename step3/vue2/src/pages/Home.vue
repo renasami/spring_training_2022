@@ -34,10 +34,8 @@ export default Vue.extend({
   },
   mounted(){
     this.info = "fa"
-    console.log(this.info)
-    const socket = new WebSocket("ws://ren:ren1000@localhost:8080/login/ws_connect?token=token")
-    console.log(this.$store.state.token)
-    // this.socket = socket
+    const socket = new WebSocket(`ws://localhost:8080/login/ws_connect?basic=${this.$store.state.key}`)
+    this.socket = socket
   },
   methods: {
     test: function():void{
