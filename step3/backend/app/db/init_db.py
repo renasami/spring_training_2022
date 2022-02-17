@@ -24,6 +24,11 @@ def inster_demo_friends(session: Session, friends: List) -> None:
         crud.user.add_friend(session, user_id=friend["user_id"], friend_id=friend["friend_id"])
 
 
+def inster_demo_messages(session: Session, messages: List) -> None:
+    for message in messages:
+        crud.message.create(session, obj_in=models.Messages(**message))
+
+
 def inster_demo_groups(session: Session, groups: List) -> None:
     for group in groups:
         crud.group.create(session, obj_in=models.Groups(**group))
@@ -44,3 +49,4 @@ if __name__ == "__main__":
         insert_demo_users(db_session, demo_data['users'])
         inster_demo_friends(db_session, demo_data['friends'])
         inster_demo_groups(db_session, demo_data['groups'])
+        inster_demo_messages(db_session, demo_data['messages'])

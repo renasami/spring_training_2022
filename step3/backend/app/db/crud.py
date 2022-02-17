@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
 
 from app.db.base import Base
-from app.db.models import Users, Friends, Groups
+from app.db.models import Users, Friends, Groups, Messages
 
 ModelType = TypeVar("ModelType", bound=Base)
 
@@ -21,17 +21,6 @@ class CRUDBase(Generic[ModelType]):
 
     def get(self, db_session: Session, id: int) -> Optional[ModelType]:
         return db_session.query(self.model).filter(self.model.id == id).first()
-
-    def get_multi(
-        self,
-        db_session: Session,
-        *,
-        skip: int = 0,
-        limit: int = 20,
-        desc: bool = True,
-    ) -> list:
-        desc = -1 if desc else 1
-        return db_session.query(self.model).offset(skip).limit(limit).all()[::desc]
 
 
 class CRUDUser(CRUDBase[Users]):
@@ -84,9 +73,39 @@ class CRUDUser(CRUDBase[Users]):
         return self.get_friends(db_session, user.id)
 
 
+class CRUDMessage(CRUDBase[Messages]):
+    def get_chat_messages(
+        self,
+        db_session: Session,
+        sender_id: int,
+        receiver_id: int,
+        *,
+        skip: int = 0,
+        limit: int = 20,
+        desc: bool = True,
+    ) -> list:
+        '''
+        skip: 何件目から取得するか
+        limit: 取得する最大件数
+        desc: 降順か昇順
+        '''
+        sended_msg = db_session\
+            .query(self.model)\
+            .filter(self.model.sender_id == sender_id)\
+            .filter(self.model.receiver_id == receiver_id)
+        received_msg = db_session\
+            .query(self.model)\
+            .filter(self.model.sender_id == receiver_id)\
+            .filter(self.model.receiver_id == sender_id)
+
+        order_by = self.model.datetime.desc() if desc else self.model.datetime.asc()
+        return sended_msg.union(received_msg).order_by(order_by).offset(skip).limit(limit).all()
+
+
 class CRUDGroups(CRUDBase[Groups]):
     ...
 
 
 user = CRUDUser(Users, Friends)
 group = CRUDGroups(Groups)
+message = CRUDMessage(Messages)

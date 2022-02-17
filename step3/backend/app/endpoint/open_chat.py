@@ -8,7 +8,7 @@ router = APIRouter()
 active_ws_connections: List[WebSocket] = []
 
 
-@router.websocket('/')
+@router.websocket('')
 async def chat(websocket: WebSocket, nickname: Optional[str] = None):
     await websocket.accept()
     logging.getLogger("fastapi").debug("    WebSocket connection accepted")
