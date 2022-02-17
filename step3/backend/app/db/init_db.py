@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     # demoデータをDBに挿入する
     with session() as db_session:
-        # insert_demo_users(db_session, demo_data['users'])
-        # inster_demo_friends(db_session, demo_data['friends'])
-        # inster_demo_groups(db_session, demo_data['groups'])
+        insert_demo_users(db_session, demo_data['users'])
+        inster_demo_friends(db_session, demo_data['friends'])
+        inster_demo_groups(db_session, demo_data['groups'])
         inster_demo_messages(db_session, demo_data['messages'])
