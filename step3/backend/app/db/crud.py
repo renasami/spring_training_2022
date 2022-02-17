@@ -1,6 +1,7 @@
 from typing import Generic, TypeVar, Type, Optional
 
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from app.db.base import Base
 from app.db.models import Users, Friends, Groups, Messages
@@ -92,7 +93,16 @@ class CRUDMessage(CRUDBase[Messages]):
 
 
 class CRUDGroups(CRUDBase[Groups]):
-    ...
+    def add_member(self, db_session: Session, group_id: int, user_id: int) -> None:
+        group = self.get(db_session, group_id)
+        user_in_db = user.get(db_session, user_id)
+        if not (group and user_in_db):
+            raise NoResultFound("group or user not found")
+        group.members.append(user_in_db)
+        db_session.add(group)
+        db_session.commit()
+        db_session.refresh(group)
+        return group
 
 
 user = CRUDUser(Users, Friends)
