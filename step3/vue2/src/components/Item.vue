@@ -1,36 +1,49 @@
 <template>
-    <div @click="talk">{{ index }} - {{ source.username }}</div>
+  <v-card
+  @click="talk">
+    <strong>{{ source.username }}</strong>
+  </v-card>
 </template>
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 export default Vue.extend({
-    name:"Item",
-    props: {
-      index: { // index of current item
-        type: Number
-      },
-      source: { // here is: {uid: 'unique_1', text: 'abc'}
-        type: Object,
-        default () {
-          return {}
-        }
-      }
+  name: "Item",
+  props: {
+    index: {
+      // index of current item
+      type: Number,
     },
-    methods: {
-      talk: function (){ 
-          this.$store.commit("updateIndex",this.index);
+    source: {
+      // here is: {uid: 'unique_1', text: 'abc'}
+      type: Object,
+      default() {
+        return {};
       },
-      onBlur: function (){
-        
-      }
-    }
-
-})
+    },
+  },
+  methods: {
+    talk: function () {
+      this.$store.commit("updateIndex", this.index);
+    },
+    onBlur: function (): void {
+      console.log("onBlur");
+    },
+    onFocus: function (): void {
+      console.log("onFocus");
+    },
+  },
+  mounted(): void {
+    console.log(this.source.username);
+    console.log(this.index);
+  },
+});
 </script>
 <style scoped>
-    div{
-        height:20vh;
-        border: 1px solid;
-        width:100%;
-    }
+div {
+  height: 20vh;
+  width: 100%;
+}
+v-list-item {
+  height: 20vh;
+}
 </style>
