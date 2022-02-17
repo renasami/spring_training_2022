@@ -74,7 +74,7 @@ class CRUDUser(CRUDBase[Users]):
 
 
 class CRUDMessage(CRUDBase[Messages]):
-    def get_multi(
+    def get_chat_messages(
         self,
         db_session: Session,
         sender_id: int,
@@ -89,14 +89,17 @@ class CRUDMessage(CRUDBase[Messages]):
         limit: 取得する最大件数
         desc: 降順か昇順
         '''
-        order_by = self.model.datetime.desc() if desc else self.model.datetime.asc()
-        return db_session\
+        sended_msg = db_session\
             .query(self.model)\
             .filter(self.model.sender_id == sender_id)\
-            .filter(self.model.receiver_id == receiver_id)\
-            .order_by(order_by)\
-            .offset(skip)\
-            .limit(limit).all()
+            .filter(self.model.receiver_id == receiver_id)
+        received_msg = db_session\
+            .query(self.model)\
+            .filter(self.model.sender_id == receiver_id)\
+            .filter(self.model.receiver_id == sender_id)
+
+        order_by = self.model.datetime.desc() if desc else self.model.datetime.asc()
+        return sended_msg.union(received_msg).order_by(order_by).offset(skip).limit(limit).all()
 
 
 class CRUDGroups(CRUDBase[Groups]):

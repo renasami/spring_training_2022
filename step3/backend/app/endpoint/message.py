@@ -1,6 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.encoders import jsonable_encoder
-import json
 from sqlalchemy.orm import Session
 
 from app.endpoint.login import ws_manager
@@ -26,8 +24,7 @@ async def message(
     send_msg = SendPersonalMessage(**received_msg.dict(), sender_id=current_user.id)
     # wsでメッセージをを送る、ログイン指定がない場合は何もしない
     if received_msg.receiver_id in ws_manager.active_connections.keys():
-        json_msg = json.dumps(jsonable_encoder(send_msg))
-        await ws_manager.send_personal_message(json_msg, receiver.id)
+        await ws_manager.send_personal_message(send_msg.json(), receiver.id)
 
     msg_in = DBMessage(**send_msg.dict())
     crud.message.create(db, obj_in=msg_in)
@@ -49,7 +46,7 @@ def get_personal_chat_history(
     if receiver is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='user not found')
 
-    return crud.message.get_multi(
+    return crud.message.get_chat_messages(
         db,
         sender_id=current_user.id,
         receiver_id=receiver_id,
