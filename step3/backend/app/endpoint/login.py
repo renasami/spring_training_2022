@@ -5,10 +5,10 @@ import json
 from sqlalchemy.orm import Session
 
 from app.db import crud
-from app.db.base import get_db
+from app.db.base import get_db, session
 from app.db.models import Users as DBUser
 from app.endpoint.schemas import LoginUser
-from app.security import auth
+from app.security import auth, security
 
 router = APIRouter()
 
@@ -51,7 +51,14 @@ ws_manager = ConnectionManager()
 
 
 @router.websocket('/ws_connect')
-async def ws_connect(websocket: WebSocket, current_user: DBUser = Depends(auth)):
+async def ws_connect(websocket: WebSocket, basic: str):
+    # wsフロントからではheaderを送れないので
+    # クエリパラメータでkeyを受け取って、バックでheaderに入れる
+    key, value = 'Authorization', f'Basic {basic}'
+    websocket.headers._list.append((key.lower().encode("latin-1"), value.encode("latin-1")))
+    with session() as db:
+        current_user = auth(db=db, credentials=await security(websocket))
+
     await ws_manager.connect(websocket, current_user.id)
     try:
         while True:
