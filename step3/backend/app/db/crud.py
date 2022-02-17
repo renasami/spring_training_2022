@@ -1,7 +1,6 @@
 from typing import Generic, TypeVar, Type, Optional
 
 from sqlalchemy.orm import Session
-from sqlalchemy.orm.exc import NoResultFound
 
 from app.db.base import Base
 from app.db.models import Users, Friends, Groups, Messages
@@ -51,26 +50,16 @@ class CRUDUser(CRUDBase[Users]):
         if user_id == friend_id:
             raise ValueError("user_id and friend_id is same")
 
-        user = self.get(db_session, user_id)
-        friend = self.get(db_session, friend_id)
-        # 該当のuserが存在しない場合
-        if not (user and friend):
-            raise NoResultFound("User or Friend not found")
-
-        # すでに友達の場合
-        friends = self.get_friends(db_session, user_id)
-        if friend in friends:
-            return friends
-
-        # 友達に追加
         if user_id > friend_id:
             # 重複追加を防ぐ
+            # ex) user_id = 1, friend_id = 2
+            #    user_id = 2, friend_id = 1
             user_id, friend_id = friend_id, user_id
         friend_in = self.friend_model(user_id=user_id, friend_id=friend_id)
-        db_session.add(friend_in)
+        db_session.merge(friend_in)
         db_session.commit()
 
-        return self.get_friends(db_session, user.id)
+        return self.get_friends(db_session, user_id)
 
 
 class CRUDMessage(CRUDBase[Messages]):

@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Body, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import IntegrityError
 
 from app.db import crud
 from app.db.base import get_db
@@ -30,8 +30,12 @@ def add_friend(
 ):
     try:
         friends = crud.user.add_friend(db, current_user.id, friend_id)
-    except (ValueError, NoResultFound) as e:
+    except ValueError as e:
+        # 自分で定義したエラー
         raise HTTPException(status_code=400, detail=f'{e}')
+    except IntegrityError:
+        # 存在したいuserを挿入しようとした場合、このエラー吐く
+        raise HTTPException(status_code=404, detail='User or Friend not found')
 
     return friends
 
