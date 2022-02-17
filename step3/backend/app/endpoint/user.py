@@ -31,7 +31,7 @@ def add_friend(
     try:
         friends = crud.user.add_friend(db, current_user.id, friend_id)
     except (ValueError, NoResultFound) as e:
-        raise HTTPException(status_code=404, detail=f'{e}')
+        raise HTTPException(status_code=400, detail=f'{e}')
 
     return friends
 
