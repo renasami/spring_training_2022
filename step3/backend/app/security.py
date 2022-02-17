@@ -3,7 +3,6 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from app.db import crud
 from app.db.base import get_db
 
 security = HTTPBasic()
@@ -19,6 +18,8 @@ def verify_password(plain_password, hashed_password):
 
 
 def auth(db: Session = Depends(get_db), credentials: HTTPBasicCredentials = Depends(security)):
+    from app.db import crud
+
     username = credentials.username
     password = credentials.password
 
