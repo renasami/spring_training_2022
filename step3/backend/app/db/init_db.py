@@ -34,6 +34,11 @@ def inster_demo_groups(session: Session, groups: List) -> None:
         crud.group.create(session, obj_in=models.Groups(**group))
 
 
+def inster_demo_groups_members(session: Session, groups_members: List) -> None:
+    for group_member in groups_members:
+        crud.group.add_member(session, group_id=group_member["group_id"], user_id=group_member["user_id"])
+
+
 if __name__ == "__main__":
     create_tables(Base, engine)
     # 以下のコマンドでDBの中身を確認できる
@@ -50,3 +55,4 @@ if __name__ == "__main__":
         inster_demo_friends(db_session, demo_data['friends'])
         inster_demo_groups(db_session, demo_data['groups'])
         inster_demo_messages(db_session, demo_data['messages'])
+        inster_demo_groups_members(db_session, demo_data['groups_members'])
