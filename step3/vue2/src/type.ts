@@ -11,6 +11,7 @@ export type Group = {
 
 export type Store = {
   name: string,
+  password:string,
   token: string,
   friends: User[],
   groups:Group[],

@@ -9,14 +9,17 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state:{
     name: "",
+    password: "",
     token: "",
     friends:<User[]>[],
     groups: <Group[]>[],
-    index:0
+    index:0,
+    // socket:
   },
   mutations: {
     updateStore(state,user:Store):void {
         state.name = user.name;
+        state.password = user.password;
         state.token = user.token;
         state.friends = user.friends;
         state.groups = user.groups;
