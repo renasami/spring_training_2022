@@ -40,10 +40,12 @@ def inster_demo_groups_members(session: Session, groups_members: List) -> None:
 
 
 if __name__ == "__main__":
-    create_tables(Base, engine)
+    # 以下のコマンドでdemoデータを挿入、すでに挿入済みのデータはコメントアウトを忘れずに
+    # docker exec -it step3-backend-1 python3 /app/db/init_db.py
     # 以下のコマンドでDBの中身を確認できる
     # docker exec -it step3-db-1 mysql --database=myjchatapp --user=mariadb --password=secret
     # show tables;
+    create_tables(Base, engine)
 
     # demoデータを読み込む
     with open("/app/db/demo_data.json", "r") as fp:
