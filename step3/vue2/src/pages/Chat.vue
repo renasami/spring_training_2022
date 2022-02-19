@@ -1,7 +1,8 @@
 <template>
     <div id="chat-space">
         <ul v-for="talk in talks" :key="talk.id">
-            <li>{{ talk.message }}</li>
+            <p>{{ talk }}</p>
+            <p>id: {{ this }}</p>
         </ul>
     </div>
 </template>
