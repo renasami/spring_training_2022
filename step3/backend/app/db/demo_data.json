@@ -210,7 +210,7 @@
             "user_id": 102
         }
     ],
-    "groupsMessages": [
+    "groups_messages": [
         {
             "datetime": "2021-03-23T20:40:26",
             "group_id": 101,

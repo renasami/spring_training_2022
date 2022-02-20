@@ -1,15 +1,15 @@
-import logging
-from typing import List, Optional
+from typing import List, Optional  # new
 
-from fastapi import FastAPI, Body, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Body, WebSocket, WebSocketDisconnect  # new
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 
-from app import config
+from app import config  # さっきのAPI KEYをインポートしておく
 
 app = FastAPI()
-logging.basicConfig(level=logging.DEBUG)
 
+# CORSの設定を行なっています
+# 今回これはおまじないだと思ってください
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
@@ -18,13 +18,16 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
+# new　ここから
+
+# 接続したクライアントのリスト
 active_ws_connections: List[WebSocket] = []
 
 
 @app.websocket('/chat')
 async def chat(websocket: WebSocket, nickname: Optional[str] = None):
+    # 接続を受け取る
     await websocket.accept()
-    logging.getLogger("fastapi").debug("    WebSocket connection accepted")
     # 接続中のclientを保持
     active_ws_connections.append(websocket)
 
@@ -33,32 +36,40 @@ async def chat(websocket: WebSocket, nickname: Optional[str] = None):
     if nickname is None:
         nickname = f'unknown_{websocket.client.host}'
 
-    logging.getLogger("fastapi").debug(f"   nickname: {nickname}")
     try:
         while True:
-            # { "message": "contents" }がbodyにある必要がある
+            # メッセージが送られるのを待つ
+            # 形は{ "message": "contents" }
             data = await websocket.receive_json()
+            # 受け取ったメッセージにnicknameを付与
             data['nickname'] = nickname
-            logging.getLogger("fastapi").debug(f"   data: {data}")
             # 全てのclientに送信
             # 形は{ "nickname": "nickname",　"message": "contents" }
             for connection in active_ws_connections:
                 await connection.send_json(data)
     except WebSocketDisconnect:
+        # 接続を切断された場合WebSocketDisconnectと言うエラーを吐くので
+        # それを捕捉して接続リストから該当のもの削除する
         active_ws_connections.remove(websocket)
+
+
+# new　ここまで
 
 
 @app.post('/talk')
 async def get_talk(query: str = Body(..., embed=True)):
 
     api_url = 'https://api.a3rt.recruit.co.jp/talk/v1/smalltalk'
+    # form-data形式だと、このように記述になります
     form = {
-        'apikey': (None, config.RECRUIT_API_KEY),
+        'apikey': (None, config.RECRUIT_API_KEY),  # こんなふうにAPI KEYを使います
         'query': (None, query),
     }
 
+    # postでリクエストを送ります
     res = requests.post(api_url, files=form)
 
+    # レスポンスをJSONにdecodeして、そもまま返します
     res_json = res.json()
 
     return res_json
@@ -67,3 +78,8 @@ async def get_talk(query: str = Body(..., embed=True)):
 @app.get('/')
 async def root():
     return {'message': 'Hello World'}
+
+
+@app.get('/hello')
+async def hello():
+    return {'message': 'Hello there! I am Sei, welcome to myjlab!'}
