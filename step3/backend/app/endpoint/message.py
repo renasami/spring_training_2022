@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
+import json
 
 from app.endpoint.login import ws_manager
 from app.db import crud
@@ -26,10 +28,13 @@ async def send_personal_message(
     except IntegrityError:
         raise HTTPException(status_code=404, detail='user not found')
 
-    send_msg = SendPersonalMessage.from_orm(db_msg)
+    send_msg = {"personal_message": SendPersonalMessage.from_orm(db_msg)}
     # wsでメッセージを送る、ログインしていない場合は何もしない
     if received_msg.receiver_id in ws_manager.active_connections.keys():
-        await ws_manager.send_personal_message(send_msg.json(), send_msg.receiver_id)
+        await ws_manager.send_personal_message(
+            json.dumps(jsonable_encoder(send_msg)),
+            send_msg['personal_message'].receiver_id,
+        )
 
     return 'Succeed'
 
@@ -74,11 +79,14 @@ async def send_group_message(
         raise HTTPException(status_code=403, detail=f'{e}')
 
     db.refresh(msg_in)
-    send_msg = SendGroupMessage.from_orm(msg_in)
+    send_msg = {"group_message": SendGroupMessage.from_orm(msg_in)}
     member_id_set = set([member.id for member in group.members])
     # グループメンバーの集合とログインしているユーザーの集合の和集合を作る
     for user_id in member_id_set & set(ws_manager.active_connections.keys()):
-        await ws_manager.send_personal_message(send_msg.json(), user_id)
+        await ws_manager.send_personal_message(
+            json.dumps(jsonable_encoder(send_msg)),
+            user_id,
+        )
 
     return 'Succeed'
 
