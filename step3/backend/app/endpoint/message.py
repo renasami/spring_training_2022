@@ -27,7 +27,7 @@ async def send_personal_message(
         raise HTTPException(status_code=404, detail='user not found')
 
     send_msg = SendPersonalMessage.from_orm(db_msg)
-    # wsでメッセージをを送る、ログイン指定がない場合は何もしない
+    # wsでメッセージを送る、ログインしていない場合は何もしない
     if received_msg.receiver_id in ws_manager.active_connections.keys():
         await ws_manager.send_personal_message(send_msg.json(), send_msg.receiver_id)
 
