@@ -1,33 +1,35 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import NoResultFound
 
 from app.endpoint.login import ws_manager
 from app.db import crud
 from app.db.base import get_db
-from app.db.models import Users as DBUser, Messages as DBMessage
+from app.db.models import Users as DBUser, Messages as DBMessage, GroupsMessages as DBGroupMessage
 from app.security import auth
-from app.endpoint.schemas import ReceivePersonalMessage, SendPersonalMessage
+from app.endpoint.schemas import ReceivePersonalMessage, SendPersonalMessage, ReceiveGroupMessage, SendGroupMessage, DetailedGroup
 
 router = APIRouter()
 
 
 @router.post('/send_personal_chat')
-async def message(
+async def send_personal_message(
     received_msg: ReceivePersonalMessage,
     db: Session = Depends(get_db),
     current_user: DBUser = Depends(auth),
 ):
-    receiver = crud.user.get(db, received_msg.receiver_id)
-    if receiver is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='user not found')
 
-    send_msg = SendPersonalMessage(**received_msg.dict(), sender_id=current_user.id)
+    msg_in = DBMessage(**received_msg.dict(), sender_id=current_user.id)
+    try:
+        db_msg = crud.message.create(db, obj_in=msg_in)
+    except IntegrityError:
+        raise HTTPException(status_code=404, detail='user not found')
+
+    send_msg = SendPersonalMessage.from_orm(db_msg)
     # wsでメッセージをを送る、ログイン指定がない場合は何もしない
     if received_msg.receiver_id in ws_manager.active_connections.keys():
-        await ws_manager.send_personal_message(send_msg.json(), receiver.id)
-
-    msg_in = DBMessage(**send_msg.dict())
-    crud.message.create(db, obj_in=msg_in)
+        await ws_manager.send_personal_message(send_msg.json(), send_msg.receiver_id)
 
     return 'Succeed'
 
@@ -44,7 +46,7 @@ def get_personal_chat_history(
 
     receiver = crud.user.get(db, receiver_id)
     if receiver is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='user not found')
+        raise HTTPException(status_code=404, detail='user not found')
 
     return crud.message.get_chat_messages(
         db,
@@ -54,3 +56,44 @@ def get_personal_chat_history(
         limit=limit,
         desc=desc,
     )
+
+
+@router.post('/send_group_chat')
+async def send_group_message(
+    received_msg: ReceiveGroupMessage,
+    db: Session = Depends(get_db),
+    current_user: DBUser = Depends(auth),
+):
+
+    msg_in = DBGroupMessage(**received_msg.dict(), sender_id=current_user.id)
+    try:
+        group = crud.group.add_message(db, message_in=msg_in)
+    except NoResultFound as e:
+        raise HTTPException(status_code=404, detail=f'{e}')
+    except ValueError as e:
+        raise HTTPException(status_code=403, detail=f'{e}')
+
+    db.refresh(msg_in)
+    send_msg = SendGroupMessage.from_orm(msg_in)
+    member_id_set = set([member.id for member in group.members])
+    # グループメンバーの集合とログインしているユーザーの集合の和集合を作る
+    for user_id in member_id_set & set(ws_manager.active_connections.keys()):
+        await ws_manager.send_personal_message(send_msg.json(), user_id)
+
+    return 'Succeed'
+
+
+@router.get("/get_group_with_chat_histroy", response_model=DetailedGroup)
+def get_group_info(
+    group_id: int,
+    db: Session = Depends(get_db),
+    current_user: DBUser = Depends(auth),
+):
+    group = crud.group.get(db, id=group_id)
+
+    # ユーザーがグループに所属していない場合
+    # グループが存在しない場合は404を返す
+    if not group or current_user not in group.members:
+        raise HTTPException(status_code=404, detail="Group not found or not in group")
+
+    return group

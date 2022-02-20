@@ -5,26 +5,10 @@ from sqlalchemy.orm.exc import NoResultFound
 from app.db import crud
 from app.db.base import get_db
 from app.db.models import Users as DBUser, Groups as DBGroup
-from app.endpoint.schemas import Group, DetailedGroup
+from app.endpoint.schemas import Group
 from app.security import auth
 
 router = APIRouter()
-
-
-@router.get("/get_with_chat_histroy", response_model=DetailedGroup)
-def get_group_info(
-    group_id: int,
-    db: Session = Depends(get_db),
-    current_user: DBUser = Depends(auth),
-):
-    group = crud.group.get(db, id=group_id)
-
-    # ユーザーがグループに所属していない場合
-    # グループが存在しない場合は404を返す
-    if not group or current_user not in group.members:
-        raise HTTPException(status_code=404, detail="Group not found or not in group")
-
-    return group
 
 
 @router.post("/create", response_model=Group)

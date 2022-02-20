@@ -23,11 +23,12 @@ class ReceivePersonalMessage(BaseModel):
     message: str
 
 
-class SendPersonalMessage(BaseModel):
-    datetime: datetime
+class SendPersonalMessage(ReceivePersonalMessage):
+    id: int
     sender_id: int
-    receiver_id: int
-    message: str
+
+    class Config:
+        orm_mode = True
 
 
 class Group(BaseModel):
@@ -52,6 +53,20 @@ class GroupMessage(BaseModel):
 
 class DetailedGroup(Group):
     messages: List[GroupMessage]
+
+
+class ReceiveGroupMessage(BaseModel):
+    datetime: datetime
+    group_id: int
+    message: str
+
+
+class SendGroupMessage(ReceiveGroupMessage):
+    id: int
+    sender_id: int
+
+    class Config:
+        orm_mode = True
 
 
 class LoginUser(BaseModel):
