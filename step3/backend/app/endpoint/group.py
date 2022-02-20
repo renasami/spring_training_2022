@@ -5,13 +5,13 @@ from sqlalchemy.orm.exc import NoResultFound
 from app.db import crud
 from app.db.base import get_db
 from app.db.models import Users as DBUser, Groups as DBGroup
-from app.endpoint.schemas import Group
+from app.endpoint.schemas import Group, DetailedGroup
 from app.security import auth
 
 router = APIRouter()
 
 
-@router.get("/get_info", response_model=Group)
+@router.get("/get_with_chat_histroy", response_model=DetailedGroup)
 def get_group_info(
     group_id: int,
     db: Session = Depends(get_db),

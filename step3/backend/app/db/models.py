@@ -44,7 +44,7 @@ class Groups(Base):
     name = Column(String(256), nullable=False, unique=True)
 
     members = relationship('Users', secondary="groups_members", back_populates='groups')
-    message = relationship('GroupsMessages')
+    messages = relationship('GroupsMessages')
 
 
 class GroupsMembers(Base):
