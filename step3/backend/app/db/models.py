@@ -12,7 +12,7 @@ class Users(Base):
     username = Column(String(256), nullable=False, unique=True)
     password = Column(String(256), nullable=False)
 
-    groups = relationship('Groups', secondary="groups_members", back_populates='users')
+    groups = relationship('Groups', secondary="groups_members", back_populates='members')
 
     # passwordをハッシュ化して保存する
     def __init__(self, *, id: int = None, username: str, password: str) -> None:
@@ -43,8 +43,8 @@ class Groups(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(256), nullable=False, unique=True)
 
-    users = relationship('Users', secondary="groups_members", back_populates='groups')
-    message = relationship('GroupsMessages')
+    members = relationship('Users', secondary="groups_members", back_populates='groups')
+    messages = relationship('GroupsMessages')
 
 
 class GroupsMembers(Base):
