@@ -36,7 +36,14 @@ def inster_demo_groups(session: Session, groups: List) -> None:
 
 def inster_demo_groups_members(session: Session, groups_members: List) -> None:
     for group_member in groups_members:
-        crud.group.add_member(session, group_id=group_member["group_id"], user_id=group_member["user_id"])
+        crud.group.add_member(
+            session, group_id=group_member["group_id"], user_id=group_member["user_id"]
+        )
+
+
+def inster_demo_groups_messages(session: Session, groups_messages: List) -> None:
+    for group_message in groups_messages:
+        crud.group.add_message(session, message_in=models.GroupsMessages(**group_message))
 
 
 if __name__ == "__main__":
@@ -58,3 +65,4 @@ if __name__ == "__main__":
         inster_demo_groups(db_session, demo_data['groups'])
         inster_demo_messages(db_session, demo_data['messages'])
         inster_demo_groups_members(db_session, demo_data['groups_members'])
+        inster_demo_groups_messages(db_session, demo_data['groups_messages'])
