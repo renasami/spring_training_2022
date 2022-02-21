@@ -46,6 +46,7 @@
       </v-btn>
       <v-btn
         to="/login"
+        @click="logout"
         text
       >
         <span class="mr-2">Log Out</span>
@@ -62,6 +63,11 @@ export default Vue.extend({
     // },
     props:{
         text:String
+    },
+    methods: {
+      logout:function () {
+        this.$store.commit("resetStore");
+      }
     }
     
 })
