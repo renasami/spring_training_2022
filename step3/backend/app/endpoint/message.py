@@ -14,6 +14,7 @@ from app.endpoint.schemas import ReceivePersonalMessage, SendPersonalMessage, Re
 
 router = APIRouter()
 
+s = ws_manager
 
 @router.post('/send_personal_chat')
 async def send_personal_message(
@@ -36,7 +37,7 @@ async def send_personal_message(
             send_msg['personal_message'].receiver_id,
         )
  
-    print(ws_manager.active_connections)
+    print(s.active_connections.keys())
 
     return 'Succeed'
 

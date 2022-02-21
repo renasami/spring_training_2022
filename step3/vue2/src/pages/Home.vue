@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-// import HelloWorld from "../components/HelloWorld.vue";
 import FriendList from "../components/FriendList.vue"
 import Header from "../components/Header.vue";
 import Chat from "./Chat.vue"

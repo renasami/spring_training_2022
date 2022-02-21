@@ -16,14 +16,18 @@
                     prepend-icon="mdi-account-circle"
                     v-model="name"
                     name="naem"
-                    label="enter Id "
+                    label="enter group name"
                     type="text"
                   ></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="login">
+                <v-checkbox
+                  v-model="join"
+                  label="作成したグループに参加する"
+                />
+                <v-btn color="primary" @click="create">
                   <v-icon left>mdi-account-multiple-plus</v-icon>
                   Login
                 </v-btn>
@@ -33,11 +37,11 @@
         </v-layout>
         <v-dialog v-model="error" persistent width="360">
           <v-card align="center">
-            <v-card-title> ユーザー名もしくはパスワードが違います </v-card-title>
+            <v-card-title> {{ message }} </v-card-title>
             <v-card-text>
               もう一度やり直してください
             </v-card-text>
-            <v-btn @click="retry" outlined color="red lighten-2" class="mb-3"
+            <v-btn @click="error = !error" outlined color="red lighten-2" class="mb-3"
               >OK</v-btn
             >
           </v-card>
@@ -49,11 +53,46 @@
 <script lang="ts">
 import Vue from 'vue'
 import Header from "../components/Header.vue"
+import {generateAllRequestOptions} from "../utils/generaters"
 
 export default Vue.extend({
     name: 'MakeGroup',
     components:{
         Header,
+    },
+    data(){
+      return {
+        join:true,
+        name:null,
+        error:false,
+        message:""
+      }
+    },
+    methods: {
+      create:async function (){
+        if (!this.name) {
+          this.message = "グループ名を入力してください"
+          this.error = !this.error
+          return
+        }
+        const data = {
+          group_name:this.name,
+          join_this_group:this.join
+        }
+        const {headers,method,body} = generateAllRequestOptions(this.$store.state.token,data)
+        const response = await fetch("http://localhost:8080/group/create",{headers,method,body})
+        if (response.status == 422) {
+          this.message = "失敗しました。"
+          this.error = !this.error
+          return
+        } 
+        const json = await response.json()
+        if (this.join === true) {
+          this.$store.commit("updateGroups",json)
+        }
+        alert(`作成されたグループIDは${json.id}です。`)
+        this.$router.push("/")
+      }
     }
 })
 </script>

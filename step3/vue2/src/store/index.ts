@@ -44,6 +44,9 @@ export default new Vuex.Store({
     },
     updateFriends(state,friends:User[]):void {
       state.friends  = friends
+    },
+    updateGroups(state,group:Group):void {
+      state.groups.push(group)
     }
   },
   getters:{
