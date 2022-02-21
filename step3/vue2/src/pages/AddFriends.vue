@@ -14,7 +14,7 @@
                   <v-text-field
                     id="name"
                     prepend-icon="mdi-account-circle"
-                    v-model="name"
+                    v-model="id"
                     name="naem"
                     label="enter Id "
                     type="text"
@@ -23,9 +23,9 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="login">
+                <v-btn color="primary" @click="addFriend">
                   <v-icon left>mdi-account-multiple-plus</v-icon>
-                  Login
+                  Add Friend
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -33,11 +33,11 @@
         </v-layout>
         <v-dialog v-model="error" persistent width="360">
           <v-card align="center">
-            <v-card-title> ユーザー名もしくはパスワードが違います </v-card-title>
+            <v-card-title> {{ message }} </v-card-title>
             <v-card-text>
               もう一度やり直してください
             </v-card-text>
-            <v-btn @click="retry" outlined color="red lighten-2" class="mb-3"
+            <v-btn @click="error =! error" outlined color="red lighten-2" class="mb-3"
               >OK</v-btn
             >
           </v-card>
@@ -49,10 +49,61 @@
 <script lang="ts">
 import Vue from 'vue'
 import Header from "../components/Header.vue"
+
+type Data = {
+    error: boolean,
+    message:string,
+    id:number,
+}
+
 export default Vue.extend({
     name:"AddFriends",
     components: {
         Header
+    },
+    data(): Data{
+        return {
+            error: false,
+            message:"",
+            id:null,
+        }
+    },
+    methods: {
+        addFriend:async function () {
+            const method = "POST"
+            if (!this.id) {
+                this.message = "友達にするidを追加してください。"
+                this.error= !this.error
+                return
+            }
+            const isFriend = this.$store.state.friends.filter(friend => friend.id == this.id)
+            if (isFriend.length > 0){
+                this.message = "既に友達です。"
+                this.error = !this.error
+                return
+            }
+            const json = {
+                "friend_id":Number(this.id)
+            }
+            const body = JSON.stringify(json)
+            const headers = {
+                Authorization: `${this.$store.state.token}`,
+                accept: "application/json",
+                "Content-Type":"application/json",
+            }
+
+            const resposnse = await fetch("http://localhost:8080/user/add_friend",{method,body,headers})
+            
+            if (resposnse.status === 422){
+                this.message = "そのidは存在しません"
+                this.error = !this.error
+                return
+            }
+            const data = await resposnse.json()
+            this.$store.commit("updateFriends",data)
+            this.$router.push("/")
+        }
+
     }
 })
 </script>
