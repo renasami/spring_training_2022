@@ -41,6 +41,12 @@ export default new Vuex.Store({
     },
     resetIndex(state) {
       state.index = 0
+    },
+    updateFriends(state,friends:User[]):void {
+      state.friends  = friends
+    },
+    updateGroups(state,group:Group):void {
+      state.groups.push(group)
     }
   },
   getters:{

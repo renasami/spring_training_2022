@@ -1,5 +1,4 @@
 <template>
-
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
@@ -17,10 +16,37 @@
         >
         </div>
       <v-spacer></v-spacer>
-
+       <v-btn
+        to="/"
+        text
+      >
+        <span class="mr-2">Let's Talk</span>
+        <v-icon>mdi-account-voice</v-icon>
+      </v-btn>
+       <v-btn
+        to="/add-friend"
+        text
+      >
+        <span class="mr-2">Add Friend</span>
+        <v-icon>mdi-account-multiple-plus</v-icon>
+      </v-btn>
       <v-btn
-        href="/"
-        target="_blank"
+        to="/join-group"
+        text
+      >
+        <span class="mr-2">Join Group</span>
+        <v-icon>mdi-account-multiple-plus</v-icon>
+      </v-btn>
+       <v-btn
+        to="/make-group"
+        text
+      >
+        <span class="mr-2">Make Group</span>
+        <v-icon>mdi-account-group</v-icon>
+      </v-btn>
+      <v-btn
+        to="/login"
+        @click="logout"
         text
       >
         <span class="mr-2">Log Out</span>
@@ -37,6 +63,11 @@ export default Vue.extend({
     // },
     props:{
         text:String
+    },
+    methods: {
+      logout:function () {
+        this.$store.commit("resetStore");
+      }
     }
     
 })

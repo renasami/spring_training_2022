@@ -84,6 +84,7 @@ export default Vue.extend({
       const headers = {
         Authorization: token,
         accept: "application/json",
+        "Content-Type":"application/json",
       };
       const url = "http://localhost:8080/login"
       const result = await fetch(url,{headers});

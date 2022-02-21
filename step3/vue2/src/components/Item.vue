@@ -1,7 +1,7 @@
 <template>
   <v-card
   @click="talk">
-    <strong>{{ source.username }}</strong>
+    <strong>{{ source.username ? source.username : source.name }}</strong>
   </v-card>
 </template>
 <script lang="ts">
