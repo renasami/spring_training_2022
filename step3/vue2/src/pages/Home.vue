@@ -13,7 +13,8 @@ import Vue from "vue";
 import FriendList from "../components/FriendList.vue"
 import Header from "../components/Header.vue";
 import Chat from "./Chat.vue"
-import {Manager} from "socket.io-client"
+
+
 type Data = {
   info:any
   socket:any
@@ -35,6 +36,13 @@ export default Vue.extend({
   mounted(){
     this.info = "fa"
     const socket = new WebSocket(`ws://localhost:8080/login/ws_connect?basic=${this.$store.state.key}`)
+    socket.onopen = function(){
+      console.log("connect")
+      socket.onmessage = function(msg) {
+        console.log(msg.data)
+      }
+      socket.send("fas")
+    }
     this.socket = socket
   },
   methods: {

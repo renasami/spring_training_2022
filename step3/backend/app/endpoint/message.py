@@ -35,6 +35,8 @@ async def send_personal_message(
             json.dumps(jsonable_encoder(send_msg)),
             send_msg['personal_message'].receiver_id,
         )
+ 
+    print(ws_manager.active_connections)
 
     return 'Succeed'
 

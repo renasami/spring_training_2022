@@ -21,10 +21,7 @@ export default Vue.extend({
   data() {
       return { 
           itemComponent:Item,
-          items: [...Array(1000)].map((_,i) => {return{
-              uid:i,
-              text:`item${i}`
-          }}),
+          items:[],
           friends:[]
       }
     },
@@ -33,8 +30,8 @@ export default Vue.extend({
     },
     beforeMount:function(){
         this.friends = this.$store.state.friends
-        this.items = this.$store.state.friends
-        console.log(this.items)
+        this.items = this.$store.state.friends.concat(this.$store.state.groups)
+        console.log(this.$store.state.groups)
     }
 });
 </script>
