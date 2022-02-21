@@ -29,15 +29,16 @@ async def send_personal_message(
     except IntegrityError:
         raise HTTPException(status_code=404, detail='user not found')
 
+    # 送るようにデータの形を変える
     send_msg = {"personal_message": SendPersonalMessage.from_orm(db_msg)}
-    # wsでメッセージを送る、ログインしていない場合は何もしない
+    send_msg = json.dumps(jsonable_encoder(send_msg))
+
+    # senderに送る
+    await ws_manager.send_personal_message(send_msg, db_msg.sender_id)
+    # receiverがログインしている場合のみ送る
     if received_msg.receiver_id in ws_manager.active_connections.keys():
-        await ws_manager.send_personal_message(
-            json.dumps(jsonable_encoder(send_msg)),
-            send_msg['personal_message'].receiver_id,
-        )
- 
-    print(s.active_connections.keys())
+        await ws_manager.send_personal_message(send_msg, db_msg.receiver_id)
+
 
     return 'Succeed'
 
