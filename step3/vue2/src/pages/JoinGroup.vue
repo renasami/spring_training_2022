@@ -1,4 +1,4 @@
-<template >
+<template>
     <div>
     <Header/>
     <v-content>
@@ -7,7 +7,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Add Friends</v-toolbar-title>
+                <v-toolbar-title>Join Group</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -25,7 +25,7 @@
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click="login">
                   <v-icon left>mdi-account-multiple-plus</v-icon>
-                  Login
+                  Join
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -49,10 +49,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import Header from "../components/Header.vue"
+
 export default Vue.extend({
-    name:"AddFriends",
-    components: {
-        Header
+    name: 'JoinGroup',
+    components:{
+        Header,
     }
 })
 </script>

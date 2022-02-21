@@ -1,4 +1,4 @@
-<template >
+<template>
     <div>
     <Header/>
     <v-content>
@@ -7,7 +7,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Add Friends</v-toolbar-title>
+                <v-toolbar-title>Make Group</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -49,13 +49,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import Header from "../components/Header.vue"
+
 export default Vue.extend({
-    name:"AddFriends",
-    components: {
-        Header
+    name: 'MakeGroup',
+    components:{
+        Header,
     }
 })
 </script>
-<style scoped>
-
+<style>
+    
 </style>
