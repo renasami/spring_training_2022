@@ -5,7 +5,10 @@ import createPersistedState from "vuex-persistedstate";
 import {User,Group,Store} from "@/type"
 
 Vue.use(Vuex);
-
+type TalkRoomInfo = {
+  index: number,
+  isGroup:boolean
+}
 export default new Vuex.Store({
   state:{
     id:0,
@@ -15,9 +18,11 @@ export default new Vuex.Store({
     key:"",
     friends:<User[]>[],
     groups: <Group[]>[],
-    index:0,
+    talkRoomInfo:null,
     friendsTalk: [],
     groupsTalk: [],
+    test:null,
+    index: 0,
   },
   mutations: {
     updateStore(state,user:Store):void {
@@ -40,11 +45,11 @@ export default new Vuex.Store({
       state.groupsTalk = []
       state.friendsTalk = []
     },
-    updateIndex(state,ind:number):void {
-      state.index = ind
+    updateInfo(state,info):void {
+      state.talkRoomInfo = info
     },
-    resetIndex(state) {
-      state.index = 0
+    resetInfo(state) {
+      state.talkRoomInfo = {index:0,isGroup:false}
     },
     updateFriends(state,friends:User[]):void {
       state.friends  = friends
@@ -57,10 +62,12 @@ export default new Vuex.Store({
     },
     updateGroupsTalk(state,talks){
       state.groupsTalk = talks
+    },
+    test(state,info){
+      state.test = info
     }
   },
   getters:{
-    index(state):number {return state.index}
   },
   actions: {},
   modules: {},

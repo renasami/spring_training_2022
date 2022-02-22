@@ -40,7 +40,6 @@ export default Vue.extend({
       socket.onmessage = function(msg) {
         console.log(msg.data)
       }
-      socket.send("fas")
     }
     this.socket = socket
   },
@@ -56,7 +55,7 @@ export default Vue.extend({
     const group = await getAllHistoryOfGroup(this.$store.state.token,groups)
     this.$store.commit("updateFriendsTalk",personal)
     this.$store.commit("updateGroupsTalk",group)
-    console.log(this.$store.state.groupsTalk)
+    console.log("before mount")
   }
 });
 </script>

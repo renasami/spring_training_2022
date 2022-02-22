@@ -1,8 +1,17 @@
 <template>
-    <div id="chat-space">
+    <div v-if="isGroup && talks != []" id="chat-space">
+        <ul v-for="talk in talks" :key="talk.id">
+            <!-- <p>{{ talk }}</p> --> <p>{{ talk.sender_id == myId ? myName : members[talk.sender_id] }}:{{ talk.message }}</p>
+        </ul>
+        <div id="input-space">
+        <v-text-field v-model="message"></v-text-field>
+        <v-btn @click="sendMessage">送信</v-btn>
+        </div>
+    </div>
+    <div v-else id="chat-space">
         <ul v-for="talk in talks" :key="talk.id">
             <!-- <p>{{ talk }}</p> -->
-            <p>{{ talk.sender_id == myId ? myName : selectedFriend.username }}:{{ talk.message }}</p>
+           <p>{{ talk.sender_id == myId ? myName : username }}:{{ talk.message }}</p>
         </ul>
         <div id="input-space">
         <v-text-field v-model="message"></v-text-field>
@@ -13,35 +22,41 @@
 <script lang="ts">
 import Vue from 'vue'
 import FriendList from "../components/FriendList.vue"
-// beforemountでgroup or friends を判断 
-// storeに格納している履歴をレンダリング
-// homeで受け取ったwsのmessageをstoreの各要素に入れていく
-// ↑こんなイメージです今は。
+
 export default Vue.extend({
     name: 'Chat',
     data() {
         return{
+        isGroup:false,
         talks: [],
         myName:"",
         myId: 0,
-        selectedFriend: null,
+        selectedItem: null,
+        username: "",
+        members: [],
         message:""
         }
     },
     beforeMount(){
-        this.$store.subscribe(async (mutation,state) =>{
-        if (mutation.type == 'updateIndex') {
-            const selectedFriend = state.friends[state.index];
-            this.myName = this.$store.state.name
-            this.selectedFriend = selectedFriend
-            this.myId = this.$store.state.id
-            const headers = {
-            Authorization: state.token,
-            accept: "application/json",
-            };
-            const rsponse = await fetch(`http://localhost:8080/message/personal_chat_history?receiver_id=${selectedFriend.id}`,{headers})
-            const text = await rsponse.text()
-            this.talks = JSON.parse(text)
+        this.$store.subscribe((mutation,state) =>{
+            if (mutation.type == 'updateInfo') {
+            const index = state.talkRoomInfo.index
+            this.isGroup = state.talkRoomInfo.isGroup
+            if(this.isGroup){
+                //扱いやすいようにid:nameのobjectに変換
+                this.members = state.groupsTalk[index - state.friends.length].members.reduce(
+                    (acc,cur) => {
+                        acc[cur.id] = cur.username
+                        return acc
+                    },{}
+                )
+                this.talks = this.$store.state.groupsTalk[index - state.friends.length].messages;
+            }else{
+                this.username = state.friends[index].username
+                this.talks = this.$store.state.friendsTalk[index];
+            }
+            this.myName = state.name
+            this.myId = state.id
             this.talks = this.talks.reverse()
          }
         })

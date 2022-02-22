@@ -8,28 +8,22 @@
 import Vue from "vue";
 export default Vue.extend({
   name: "Item",
-  props: {
-    index: {
-      // index of current item
-      type: Number,
-    },
-    source: {
-      // here is: {uid: 'unique_1', text: 'abc'}
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-  },
+  props:["index","source"],
   methods: {
     talk: function () {
+      console.log("talk")
       
-      this.$store.commit("updateIndex", this.index);
+      const isGroup = this.source.username ? false : true;
+      const index = this.index;
+      const data = {
+        index: index,
+        isGroup: isGroup
+      }
+      // console.log("info",this.$store.state.talkRoomInfo)
+      this.$store.commit("test",data)
+      this.$nextTick(this.$store.commit("updateInfo",data));
+      console.log(this.$store.state.test)
     },
-  },
-  mounted(): void {
-    console.log(this.source.username);
-    console.log(this.index);
   },
 });
 </script>
