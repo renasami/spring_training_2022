@@ -13,7 +13,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import FriendList from "../components/FriendList.vue"
-
+// beforemountでgroup or friends を判断 
+// storeに格納している履歴をレンダリング
+// homeで受け取ったwsのmessageをstoreの各要素に入れていく
+// ↑こんなイメージです今は。
 export default Vue.extend({
     name: 'Chat',
     data() {

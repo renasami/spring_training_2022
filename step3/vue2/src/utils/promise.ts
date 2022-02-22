@@ -33,8 +33,8 @@ export const getAllHistoryOfPersonal = async (key:string,data:[]) =>{
         })
 
     )
-    const response = result.map(res => JSON.parse(res))
-    return response
+    //文字形式の配列をObject形式の配列に変更する
+    return result.map(res => JSON.parse(res))
 }
 export const getAllHistoryOfGroup = async (key:string,data:[]) =>{
     const result = await Promise.all(
@@ -45,6 +45,5 @@ export const getAllHistoryOfGroup = async (key:string,data:[]) =>{
         })
 
     )
-    const response = result.map(res => JSON.parse(res))
-    return response
+    return result.map(res => JSON.parse(res))
 }
