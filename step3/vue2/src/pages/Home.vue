@@ -12,7 +12,7 @@ import Vue from "vue";
 import FriendList from "../components/FriendList.vue"
 import Header from "../components/Header.vue";
 import Chat from "./Chat.vue"
-
+import { getAllHistoryOfGroup, getAllHistoryOfPersonal } from "../utils/promise"
 
 type Data = {
   info:any
@@ -44,10 +44,19 @@ export default Vue.extend({
     }
     this.socket = socket
   },
-  methods: {
-    test: function():void{
-      this.socket.send("hello")
-    }
+  beforeMount: async function(){
+    // const friendsTalks = this.$sto
+    const friends = this.$store.state.friends.map(friend => {
+      return {receiver_id:friend.id}
+    })
+    const groups = this.$store.state.groups.map(group => {
+      return {group_id:group.id}
+    })
+    const personal = await getAllHistoryOfPersonal(this.$store.state.token,friends)
+    const group = await getAllHistoryOfGroup(this.$store.state.token,groups)
+    this.$store.commit("updateFriendsTalk",personal)
+    this.$store.commit("updateGroupsTalk",group)
+    console.log(this.$store.state.groupsTalk)
   }
 });
 </script>

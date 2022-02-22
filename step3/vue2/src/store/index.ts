@@ -16,6 +16,8 @@ export default new Vuex.Store({
     friends:<User[]>[],
     groups: <Group[]>[],
     index:0,
+    friendsTalk: [],
+    groupsTalk: [],
   },
   mutations: {
     updateStore(state,user:Store):void {
@@ -35,6 +37,8 @@ export default new Vuex.Store({
       state.key = ''
       state.friends = []
       state.groups = []
+      state.groupsTalk = []
+      state.friendsTalk = []
     },
     updateIndex(state,ind:number):void {
       state.index = ind
@@ -47,6 +51,12 @@ export default new Vuex.Store({
     },
     updateGroups(state,group:Group):void {
       state.groups.push(group)
+    },
+    updateFriendsTalk(state,talks){
+      state.friendsTalk = talks
+    },
+    updateGroupsTalk(state,talks){
+      state.groupsTalk = talks
     }
   },
   getters:{
