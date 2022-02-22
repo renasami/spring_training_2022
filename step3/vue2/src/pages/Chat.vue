@@ -64,6 +64,7 @@ export default Vue.extend({
           this.username = state.friends[index].username;
           this.subjectId = state.friends[index].id
           this.talks = this.$store.state.friendsTalk[index];
+          console.log(this.$store.state.friendsTalk)
           this.members = []
         }
         this.myName = state.name;
@@ -78,7 +79,6 @@ export default Vue.extend({
       if (!this.message) return;
       let data = {
         datetime: Date.now(),
-        receiver_id:this.subjectId,
         message: this.message,
       };
       let param:string 
@@ -91,11 +91,8 @@ export default Vue.extend({
         param = "send_personal_chat"
       }
       this.message = ""
-      console.log("send")
-      const { headers, method, body } = generateAllRequestOptions(this.$store.state.token,data);
-      console.log(headers,body,method);
+      const { headers, method, body } = generateAllRequestOptions(this.$store.state.token,data);      
       const resp = await fetch(`http://localhost:8080/message/${param}`,{ headers, method, body } );
-      console.log(resp)
     },
   },
 });

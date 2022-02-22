@@ -20,8 +20,7 @@ export default Vue.extend({
         isGroup: isGroup
       }
       // console.log("info",this.$store.state.talkRoomInfo)
-      this.$store.commit("test",data)
-      this.$nextTick(this.$store.commit("updateInfo",data));
+      this.$store.commit("updateInfo",data);
       console.log(this.$store.state.test)
     },
   },

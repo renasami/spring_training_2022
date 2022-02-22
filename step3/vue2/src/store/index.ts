@@ -63,9 +63,6 @@ export default new Vuex.Store({
     updateGroupsTalk(state,talks){
       state.groupsTalk = talks
     },
-    test(state,info){
-      state.test = info
-    }
   },
   getters:{
   },

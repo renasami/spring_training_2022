@@ -41,7 +41,17 @@ export default Vue.extend({
         console.log(msg.data)
       }
     }
-    this.socket = socket
+  },
+  methods: {
+    addHistory: function (data) {
+      const key = Object.keys(data)
+      if(key[0] == "personal_message"){
+          const obj = data.personal_message
+          const friend = this.$store.state.friends.filter(f => f.id == obj.sender_id)
+          const id = friend.id
+          // const messages = this.$store.state.friendsTalk.filter
+      }
+    }
   },
   beforeMount: async function(){
     // const friendsTalks = this.$sto
