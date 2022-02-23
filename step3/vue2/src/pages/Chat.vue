@@ -82,13 +82,14 @@ export default Vue.extend({
       };
       let param:string 
       if (this.isGroup) {
-        data["group_id"] = this.subjectId
+        data["group_id"] = this.subjectId.id
         param = "send_group_chat"
 
       }else{
         data["receiver_id"] = this.subjectId
         param = "send_personal_chat"
       }
+      console.log(data)
       this.message = ""
       const { headers, method, body } = generateAllRequestOptions(this.$store.state.token,data);      
       const resp = await fetch(`http://localhost:8080/message/${param}`,{ headers, method, body } );
