@@ -33,6 +33,7 @@ export default Vue.extend({
     },
     beforeMount:function(){
         this.items = this.$store.state.friends.concat(this.$store.state.groups)
+        console.log(this.$store.state.groups)
     }
 });
 </script>

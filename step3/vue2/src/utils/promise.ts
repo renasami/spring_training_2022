@@ -1,5 +1,5 @@
 import { generateHeaders } from "./generaters"
-// //to tomorrow me, i wanna get group and personal chat history so i think use promise.all and params are to be id.
+//to tomorrow me, i wanna get group and personal chat history so i think use promise.all and params are to be id.
 // export const promiseAll = async (token:string,) => {
 //     const {headers, body,method} = generateAllRequestOptions(token,null)
 //     talksArr =  await Promise.all([

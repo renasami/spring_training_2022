@@ -64,6 +64,17 @@ export default Vue.extend({
           let updatableObj = this.$store.state.friendsTalk
           updatableObj[index] = messages
           this.$store.commit("updateFriendsTalk",updatableObj)
+      }else{
+        const obj = json.group_message
+        const group = this.$store.state.groups.filter(g => g.id == obj.group_id)
+        const index = this.$store.state.groups.indexOf(group[0])
+        const talk = this.$store.state.groupsTalk[index]
+        talk.messages.push(obj)
+        let updatableObj = this.$store.state.groupsTalk
+        updatableObj[index] = talk
+        console.log(updatableObj)
+        this.$store.commit("updateGroupsTalk",updatableObj)
+        
       }
     }
   },
