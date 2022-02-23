@@ -69,7 +69,6 @@ export default Vue.extend({
         }
         this.myName = state.name;
         this.myId = state.id;
-        this.talks = this.talks.reverse();
       }
     });
   },
