@@ -63,6 +63,9 @@ export default new Vuex.Store({
     updateGroupsTalk(state,talks){
       state.groupsTalk = talks
     },
+    updatePersonalTalk(state,obj){
+      state.friendsTalk[obj.index] = obj.messages
+    }
   },
   getters:{
   },

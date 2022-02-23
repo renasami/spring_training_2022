@@ -13,7 +13,7 @@ import FriendList from "../components/FriendList.vue"
 import Header from "../components/Header.vue";
 import Chat from "./Chat.vue"
 import { getAllHistoryOfGroup, getAllHistoryOfPersonal } from "../utils/promise"
-
+import {User} from "../type"
 type Data = {
   info:any
   socket:any
@@ -35,21 +35,35 @@ export default Vue.extend({
   mounted(){
     this.info = "fa"
     const socket = new WebSocket(`ws://localhost:8080/login/ws_connect?basic=${this.$store.state.key}`)
+    // const addHistory = this.addHistory()
+    const self:any = this
     socket.onopen = function(){
       console.log("connect")
       socket.onmessage = function(msg) {
-        console.log(msg.data)
+        // console.log(msg.data)
+        self.addHistory(msg.data)
       }
     }
   },
   methods: {
-    addHistory: function (data) {
-      const key = Object.keys(data)
+    addHistory: function (data: string):void {
+      const json = JSON.parse(data)
+      const key = Object.keys(json)
       if(key[0] == "personal_message"){
-          const obj = data.personal_message
-          const friend = this.$store.state.friends.filter(f => f.id == obj.sender_id)
-          const id = friend.id
-          // const messages = this.$store.state.friendsTalk.filter
+          const obj = json.personal_message
+          let friend: any
+          if(obj.sender_id == this.$store.state.id){
+             friend = this.$store.state.friends.filter((f,i) => f.id == obj.receiver_id )
+          }else{
+             friend = this.$store.state.friends.filter((f,i) => f.id == obj.sender_id)
+          }
+          //array.indexOf( value )でindexを検索
+          const index = this.$store.state.friends.indexOf(friend[0])
+          const messages = this.$store.state.friendsTalk[index]
+          messages.push(obj)
+          let updatableObj = this.$store.state.friendsTalk
+          updatableObj[index] = messages
+          this.$store.commit("updateFriendsTalk",updatableObj)
       }
     }
   },
