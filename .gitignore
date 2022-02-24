@@ -2,5 +2,6 @@
 config.py
 __pycache__
 node_modules
+.env
 
 *.lock
