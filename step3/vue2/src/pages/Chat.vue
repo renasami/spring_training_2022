@@ -92,7 +92,7 @@ export default Vue.extend({
       console.log(data)
       this.message = ""
       const { headers, method, body } = generateAllRequestOptions(this.$store.state.token,data);      
-      const resp = await fetch(`http://localhost:8080/message/${param}`,{ headers, method, body } );
+      const resp = await fetch(`${this.$store.state.baseUrl}/message/${param}`,{ headers, method, body } );
     },
   },
 });

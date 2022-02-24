@@ -65,7 +65,7 @@ export default Vue.extend({
     login: async function (): Promise<void> {
       if (this.name === "" || this.password === "") return;
       if (!this.validLanguage(this.name)) return;
-      const url = "http://localhost:8080/user/register"
+      const url = `${this.$store.state.baseUrl}user/register`
       const method = "POST"
        const headers = {
             'Accept': 'application/json',

@@ -23,6 +23,7 @@ export default new Vuex.Store({
     groupsTalk: [],
     test:null,
     index: 0,
+    baseURL:"http://api.myj-spring-training-2022.kuroi.link/"
   },
   mutations: {
     updateStore(state,user:Store):void {

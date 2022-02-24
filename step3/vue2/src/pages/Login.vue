@@ -86,7 +86,7 @@ export default Vue.extend({
         accept: "application/json",
         "Content-Type":"application/json",
       };
-      const url = "http://localhost:8080/login"
+      const url =`${this.$store.state.baseUrl}login`
       const result = await fetch(url,{headers});
       const json = await result.json();
       if (result.status === 500)  alert("Internal Server Error")

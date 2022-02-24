@@ -29,7 +29,7 @@ export const getAllHistoryOfPersonal = async (key:string,data:[]) =>{
 
         data.map(async (d) => {
             const headers = generateHeaders(key)
-            return await fetch(`http://localhost:8080/message/personal_chat_history?receiver_id=${d.receiver_id}&limit=200`,{headers}).then(res => res.text())
+            return await fetch(`http://api.myj-spring-training-2022.kuroi.link/message/personal_chat_history?receiver_id=${d.receiver_id}&limit=200`,{headers}).then(res => res.text())
         })
 
     )
@@ -41,7 +41,7 @@ export const getAllHistoryOfGroup = async (key:string,data:[]) =>{
 
         data.map(async (d) => {
             const headers = generateHeaders(key)
-            return await fetch(`http://localhost:8080/message/get_group_with_chat_histroy?group_id=${d.group_id}`,{headers}).then(res => res.text())
+            return await fetch(`http://api.myj-spring-training-2022.kuroi.link/message/get_group_with_chat_histroy?group_id=${d.group_id}`,{headers}).then(res => res.text())
         })
 
     )
