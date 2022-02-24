@@ -16,6 +16,7 @@ router = APIRouter()
 
 s = ws_manager
 
+
 @router.post('/send_personal_chat')
 async def send_personal_message(
     received_msg: ReceivePersonalMessage,
@@ -38,7 +39,6 @@ async def send_personal_message(
     # receiverがログインしている場合のみ送る
     if received_msg.receiver_id in ws_manager.active_connections.keys():
         await ws_manager.send_personal_message(send_msg, db_msg.receiver_id)
-
 
     return 'Succeed'
 

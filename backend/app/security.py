@@ -1,6 +1,8 @@
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
 
 from app.db.base import get_db
@@ -33,3 +35,7 @@ def auth(db: Session = Depends(get_db), credentials: HTTPBasicCredentials = Depe
         )
 
     return user
+
+
+# rate limiter
+limiter = Limiter(key_func=get_remote_address)

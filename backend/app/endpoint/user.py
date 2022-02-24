@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Body, HTTPException
+from fastapi import APIRouter, Depends, Body, HTTPException, Request
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
@@ -8,13 +8,15 @@ from app.db import crud
 from app.db.base import get_db
 from app.db.models import Users as DBUser
 from app.endpoint.schemas import User, UserCreate
-from app.security import auth
+from app.security import auth, limiter
 
 router = APIRouter()
 
 
 @router.post('/register', response_model=User)
+@limiter.limit("5/minute")
 def register(
+    request: Request,
     user_in: UserCreate,
     db: Session = Depends(get_db),
 ):

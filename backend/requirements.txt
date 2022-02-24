@@ -1,4 +1,5 @@
 fastapi[all]
+slowapi
 
 tenacity
 python-jose[cryptography]
