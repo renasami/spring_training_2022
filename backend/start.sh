@@ -31,5 +31,5 @@ else
 fi
 
 # Start Gunicorn
-# exec gunicorn -k "$WORKER_CLASS" -c "$GUNICORN_CONF" "$APP_MODULE"
-exec uvicorn main:app --reload --host 0.0.0.0 --port 80
+exec gunicorn -k "$WORKER_CLASS" -c "$GUNICORN_CONF" "$APP_MODULE"
+# exec uvicorn main:app --reload --host 0.0.0.0 --port 80
