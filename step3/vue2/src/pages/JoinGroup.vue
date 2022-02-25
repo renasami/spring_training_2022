@@ -73,7 +73,7 @@ export default Vue.extend({
                 group_id:this.group_id
             }
             const {headers,method,body} = generateAllRequestOptions(this.$store.state.token,data)
-            const response = await fetch("http://localhost:8080/group/join",{method,body,headers})
+            const response = await fetch(`${this.$store.state.baseUrl}group/join`,{method,body,headers})
             if (response.status === 422 ){
                 this.message = "そのIDのグループは存在しません"
                 this.error = !this.error

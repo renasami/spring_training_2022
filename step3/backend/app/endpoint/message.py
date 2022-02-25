@@ -22,7 +22,6 @@ async def send_personal_message(
     db: Session = Depends(get_db),
     current_user: DBUser = Depends(auth),
 ):
-
     msg_in = DBMessage(**received_msg.dict(), sender_id=current_user.id)
     try:
         db_msg = crud.message.create(db, obj_in=msg_in)

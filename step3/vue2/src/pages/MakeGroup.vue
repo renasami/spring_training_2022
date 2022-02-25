@@ -80,7 +80,7 @@ export default Vue.extend({
           join_this_group:this.join
         }
         const {headers,method,body} = generateAllRequestOptions(this.$store.state.token,data)
-        const response = await fetch("http://localhost:8080/group/create",{headers,method,body})
+        const response = await fetch(`${this.$store.state.baseUrl}group/create`,{headers,method,body})
         if (response.status == 422) {
           this.message = "失敗しました。"
           this.error = !this.error

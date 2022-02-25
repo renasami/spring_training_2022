@@ -92,7 +92,7 @@ export default Vue.extend({
                 "Content-Type":"application/json",
             }
 
-            const resposnse = await fetch("http://localhost:8080/user/add_friend",{method,body,headers})
+            const resposnse = await fetch(`${this.$store.state.baseUrl}/user/add_friend`,{method,body,headers})
             
             if (resposnse.status === 422){
                 this.message = "そのidは存在しません"

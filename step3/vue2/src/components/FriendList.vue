@@ -16,12 +16,15 @@
 import Vue from "vue";
 import VirtualList from 'vue-virtual-scroll-list'
 import Item from "./Item.vue"
+import GroupItem from "./GroupItem.vue"
 export default Vue.extend({
   name:"FriendList",
   data() {
       return { 
           itemComponent:Item,
+          groupComponent:GroupItem,
           items:[],
+          groups:[],
           friends:[]
       }
     },
@@ -29,7 +32,6 @@ export default Vue.extend({
         VirtualList,
     },
     beforeMount:function(){
-        this.friends = this.$store.state.friends
         this.items = this.$store.state.friends.concat(this.$store.state.groups)
         console.log(this.$store.state.groups)
     }

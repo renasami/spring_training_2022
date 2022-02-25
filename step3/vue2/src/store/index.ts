@@ -5,7 +5,10 @@ import createPersistedState from "vuex-persistedstate";
 import {User,Group,Store} from "@/type"
 
 Vue.use(Vuex);
-
+type TalkRoomInfo = {
+  index: number,
+  isGroup:boolean
+}
 export default new Vuex.Store({
   state:{
     id:0,
@@ -15,7 +18,12 @@ export default new Vuex.Store({
     key:"",
     friends:<User[]>[],
     groups: <Group[]>[],
-    index:0,
+    talkRoomInfo:null,
+    friendsTalk: [],
+    groupsTalk: [],
+    test:null,
+    index: 0,
+    baseURL:"http://api.myj-spring-training-2022.kuroi.link/"
   },
   mutations: {
     updateStore(state,user:Store):void {
@@ -35,22 +43,32 @@ export default new Vuex.Store({
       state.key = ''
       state.friends = []
       state.groups = []
+      state.groupsTalk = []
+      state.friendsTalk = []
     },
-    updateIndex(state,ind:number):void {
-      state.index = ind
+    updateInfo(state,info):void {
+      state.talkRoomInfo = info
     },
-    resetIndex(state) {
-      state.index = 0
+    resetInfo(state) {
+      state.talkRoomInfo = {index:0,isGroup:false}
     },
     updateFriends(state,friends:User[]):void {
       state.friends  = friends
     },
     updateGroups(state,group:Group):void {
       state.groups.push(group)
+    },
+    updateFriendsTalk(state,talks){
+      state.friendsTalk = talks
+    },
+    updateGroupsTalk(state,talks){
+      state.groupsTalk = talks
+    },
+    updatePersonalTalk(state,obj){
+      state.friendsTalk[obj.index] = obj.messages
     }
   },
   getters:{
-    index(state):number {return state.index}
   },
   actions: {},
   modules: {},
