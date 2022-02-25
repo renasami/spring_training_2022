@@ -86,8 +86,8 @@ export default Vue.extend({
         accept: "application/json",
         "Content-Type":"application/json",
       };
-      const url =`${this.$store.state.baseUrl}login`
-      const result = await fetch(url,{headers});
+      const url ="http://api.myj-spring-training-2022.kuroi.link/login"
+      const result = await fetch("http://api.myj-spring-training-2022.kuroi.link/login",{headers});
       const json = await result.json();
       if (result.status === 500)  alert("Internal Server Error")
       if (result.status !== 200) this.error = true;
