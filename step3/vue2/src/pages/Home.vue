@@ -1,8 +1,8 @@
 <template>
   <div>
-  <Header :text="this.info"/>
+  <Header />
     <FriendList/>
-    <Chat text="fa" />
+    <Chat />
     <!-- <button @click="tset">f</button> -->
   </div>
 </template>
@@ -14,10 +14,6 @@ import Header from "../components/Header.vue";
 import Chat from "./Chat.vue"
 import { getAllHistoryOfGroup, getAllHistoryOfPersonal } from "../utils/promise"
 import {User} from "../type"
-type Data = {
-  info:any
-  socket:any
-}
 
 export default Vue.extend({
   name: "Home",
@@ -26,16 +22,15 @@ export default Vue.extend({
     FriendList,
     Chat
   },
-  data():Data{ 
+  data(){ 
     return {
-      info:"fa",
       socket:null
     }
   },
   mounted(){
-    this.info = "fa"
-    const socket = new WebSocket(`ws://localhost:8080/login/ws_connect?basic=${this.$store.state.key}`)
+    const socket = new WebSocket(`ws://api.myj-spring-training-2022.kuroi.link/login/ws_connect?basic=${this.$store.state.key}`)
     // const addHistory = this.addHistory()
+   // eslint-disable-line
     const self:any = this
     socket.onopen = function(){
       console.log("connect")
