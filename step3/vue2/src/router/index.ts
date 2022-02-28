@@ -6,7 +6,6 @@ import Register from "../pages/Register.vue";
 import AddFriends from "../pages/AddFriends.vue";
 import MakeGroup from "../pages/MakeGroup.vue";
 import JoinGroup from "../pages/JoinGroup.vue";
-//store 
 import Store from '../store/'
 
 Vue.use(VueRouter);
